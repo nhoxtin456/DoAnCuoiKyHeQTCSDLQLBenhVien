@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="QLBV">
+  <DataContextMoniker Name="/QLBVDataContext" />
+  <nestedChildShapes>
+    <classShape Id="5eaf5aaa-09c0-474d-829b-2fd6e0a613c6" absoluteBounds="5.375, 2.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/QLBVDataContext/BacSi" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3dc7c69b-a9ae-4183-baec-626bbf925290" absoluteBounds="5.39, 3.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
