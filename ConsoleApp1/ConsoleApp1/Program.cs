@@ -50,6 +50,16 @@ namespace ConsoleApp1
 
                 var studs1 = context.Account.FromSql("GetAccount @p0", "khoa").ToList();
 
+                var name = new SqlParameter("@Name", "Ali");
+                dbContext.Database.ExecuteSqlCommand("dbo.Employee_Insert @Name", name);
+
+                var name = new SqlParameter("@Name", "Umar");
+                var id = new SqlParameter("@id", 1);
+                dbContext.Database.ExecuteSqlCommand("dbo.Employee_Update @Id,@Name", id, name);
+
+                var id = new SqlParameter("@id", 1);
+                dbContext.Database.ExecuteSqlCommand("dbo.Employee_Delete @Id, id);
+
             }
 
         }
