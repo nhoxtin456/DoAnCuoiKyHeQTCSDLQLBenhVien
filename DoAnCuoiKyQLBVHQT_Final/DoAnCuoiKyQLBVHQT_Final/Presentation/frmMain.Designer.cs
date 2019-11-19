@@ -28,112 +28,195 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.heThongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dangNhapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dangXuatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thoatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quanLyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quanLyLoaiNhanVienToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quanLyNhanVienToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quanLyKhoaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quanLyBacSiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hoatDongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thongKeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblDate = new System.Windows.Forms.Label();
+            this.lblTime = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.quanLyPhieuDangKyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quanLyBenhNhanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // menuStrip1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(144, 193);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(774, 328);
-            this.dataGridView1.TabIndex = 0;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.heThongToolStripMenuItem,
+            this.quanLyToolStripMenuItem,
+            this.hoatDongToolStripMenuItem,
+            this.thongKeToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1400, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // dateTimePicker1
+            // heThongToolStripMenuItem
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(556, 117);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 1;
+            this.heThongToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dangNhapToolStripMenuItem,
+            this.dangXuatToolStripMenuItem,
+            this.thoatToolStripMenuItem});
+            this.heThongToolStripMenuItem.Name = "heThongToolStripMenuItem";
+            this.heThongToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.heThongToolStripMenuItem.Text = "He Thong";
             // 
-            // button1
+            // dangNhapToolStripMenuItem
             // 
-            this.button1.Location = new System.Drawing.Point(329, 117);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.dangNhapToolStripMenuItem.Name = "dangNhapToolStripMenuItem";
+            this.dangNhapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dangNhapToolStripMenuItem.Text = "Dang Nhap";
+            this.dangNhapToolStripMenuItem.Click += new System.EventHandler(this.dangNhapToolStripMenuItem_Click);
             // 
-            // textBox1
+            // dangXuatToolStripMenuItem
             // 
-            this.textBox1.Location = new System.Drawing.Point(21, 36);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(83, 20);
-            this.textBox1.TabIndex = 3;
+            this.dangXuatToolStripMenuItem.Name = "dangXuatToolStripMenuItem";
+            this.dangXuatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dangXuatToolStripMenuItem.Text = "Dang Xuat";
+            this.dangXuatToolStripMenuItem.Click += new System.EventHandler(this.dangXuatToolStripMenuItem_Click_1);
             // 
-            // textBox2
+            // thoatToolStripMenuItem
             // 
-            this.textBox2.Location = new System.Drawing.Point(131, 36);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(83, 20);
-            this.textBox2.TabIndex = 3;
+            this.thoatToolStripMenuItem.Name = "thoatToolStripMenuItem";
+            this.thoatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.thoatToolStripMenuItem.Text = "Thoat";
+            this.thoatToolStripMenuItem.Click += new System.EventHandler(this.thoatToolStripMenuItem_Click_1);
             // 
-            // textBox3
+            // quanLyToolStripMenuItem
             // 
-            this.textBox3.Location = new System.Drawing.Point(220, 36);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(83, 20);
-            this.textBox3.TabIndex = 3;
+            this.quanLyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quanLyLoaiNhanVienToolStripMenuItem,
+            this.quanLyNhanVienToolStripMenuItem,
+            this.quanLyKhoaToolStripMenuItem,
+            this.quanLyBacSiToolStripMenuItem});
+            this.quanLyToolStripMenuItem.Name = "quanLyToolStripMenuItem";
+            this.quanLyToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.quanLyToolStripMenuItem.Text = "Quan Ly";
+            this.quanLyToolStripMenuItem.Click += new System.EventHandler(this.quanLyToolStripMenuItem_Click);
             // 
-            // textBox4
+            // quanLyLoaiNhanVienToolStripMenuItem
             // 
-            this.textBox4.Location = new System.Drawing.Point(346, 36);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(83, 20);
-            this.textBox4.TabIndex = 3;
+            this.quanLyLoaiNhanVienToolStripMenuItem.Name = "quanLyLoaiNhanVienToolStripMenuItem";
+            this.quanLyLoaiNhanVienToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.quanLyLoaiNhanVienToolStripMenuItem.Text = "Quan Ly Loai Nhan Vien";
+            this.quanLyLoaiNhanVienToolStripMenuItem.Click += new System.EventHandler(this.quanLyLoaiNhanVienToolStripMenuItem_Click_1);
             // 
-            // textBox5
+            // quanLyNhanVienToolStripMenuItem
             // 
-            this.textBox5.Location = new System.Drawing.Point(475, 36);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(83, 20);
-            this.textBox5.TabIndex = 3;
+            this.quanLyNhanVienToolStripMenuItem.Name = "quanLyNhanVienToolStripMenuItem";
+            this.quanLyNhanVienToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.quanLyNhanVienToolStripMenuItem.Text = "Quan Ly Nhan Vien";
+            this.quanLyNhanVienToolStripMenuItem.Click += new System.EventHandler(this.quanLyNhanVienToolStripMenuItem_Click_1);
             // 
-            // textBox6
+            // quanLyKhoaToolStripMenuItem
             // 
-            this.textBox6.Location = new System.Drawing.Point(613, 36);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(83, 20);
-            this.textBox6.TabIndex = 3;
+            this.quanLyKhoaToolStripMenuItem.Name = "quanLyKhoaToolStripMenuItem";
+            this.quanLyKhoaToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.quanLyKhoaToolStripMenuItem.Text = "Quan Ly Khoa";
+            this.quanLyKhoaToolStripMenuItem.Click += new System.EventHandler(this.quanLyKhoaToolStripMenuItem_Click_1);
             // 
-            // textBox7
+            // quanLyBacSiToolStripMenuItem
             // 
-            this.textBox7.Location = new System.Drawing.Point(716, 36);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(83, 20);
-            this.textBox7.TabIndex = 3;
+            this.quanLyBacSiToolStripMenuItem.Name = "quanLyBacSiToolStripMenuItem";
+            this.quanLyBacSiToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.quanLyBacSiToolStripMenuItem.Text = "Quan Ly Bac Si";
+            this.quanLyBacSiToolStripMenuItem.Click += new System.EventHandler(this.quanLyBacSiToolStripMenuItem_Click_1);
+            // 
+            // hoatDongToolStripMenuItem
+            // 
+            this.hoatDongToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quanLyPhieuDangKyToolStripMenuItem,
+            this.quanLyBenhNhanToolStripMenuItem});
+            this.hoatDongToolStripMenuItem.Name = "hoatDongToolStripMenuItem";
+            this.hoatDongToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
+            this.hoatDongToolStripMenuItem.Text = "Hoat Dong";
+            this.hoatDongToolStripMenuItem.Click += new System.EventHandler(this.hoatDongToolStripMenuItem_Click);
+            // 
+            // thongKeToolStripMenuItem
+            // 
+            this.thongKeToolStripMenuItem.Name = "thongKeToolStripMenuItem";
+            this.thongKeToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.thongKeToolStripMenuItem.Text = "Thong Ke";
+            this.thongKeToolStripMenuItem.Click += new System.EventHandler(this.thongKeToolStripMenuItem_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 27);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1400, 397);
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
+            // 
+            // lblDate
+            // 
+            this.lblDate.AutoSize = true;
+            this.lblDate.Location = new System.Drawing.Point(24, 458);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Size = new System.Drawing.Size(35, 13);
+            this.lblDate.TabIndex = 10;
+            this.lblDate.Text = "label1";
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(1227, 458);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(35, 13);
+            this.lblTime.TabIndex = 10;
+            this.lblTime.Text = "label1";
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // quanLyPhieuDangKyToolStripMenuItem
+            // 
+            this.quanLyPhieuDangKyToolStripMenuItem.Name = "quanLyPhieuDangKyToolStripMenuItem";
+            this.quanLyPhieuDangKyToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.quanLyPhieuDangKyToolStripMenuItem.Text = "Quan Ly Phieu Dang Ky";
+            this.quanLyPhieuDangKyToolStripMenuItem.Click += new System.EventHandler(this.quanLyPhieuDangKyToolStripMenuItem_Click);
+            // 
+            // quanLyBenhNhanToolStripMenuItem
+            // 
+            this.quanLyBenhNhanToolStripMenuItem.Name = "quanLyBenhNhanToolStripMenuItem";
+            this.quanLyBenhNhanToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.quanLyBenhNhanToolStripMenuItem.Text = "Quan Ly Benh Nhan";
+            this.quanLyBenhNhanToolStripMenuItem.Click += new System.EventHandler(this.quanLyBenhNhanToolStripMenuItem_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(986, 551);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(1400, 608);
+            this.Controls.Add(this.lblTime);
+            this.Controls.Add(this.lblDate);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = "Form Main";
             this.Load += new System.EventHandler(this.frmMain_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,16 +224,24 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem heThongToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dangNhapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dangXuatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thoatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quanLyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quanLyNhanVienToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quanLyKhoaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quanLyBacSiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hoatDongToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thongKeToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblDate;
+        private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.ToolStripMenuItem quanLyLoaiNhanVienToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripMenuItem quanLyPhieuDangKyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quanLyBenhNhanToolStripMenuItem;
     }
 }
 

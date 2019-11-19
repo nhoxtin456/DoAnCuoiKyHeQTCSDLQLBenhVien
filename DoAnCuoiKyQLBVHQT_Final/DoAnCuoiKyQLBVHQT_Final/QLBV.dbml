@@ -1,35 +1,289 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QuanLyBenhVien_DoAnCuoiKi" Class="QLBVDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=MINHKHOA\TIN;Initial Catalog=QuanLyBenhVien_DoAnCuoiKi;Integrated Security=True" SettingsObjectName="DoAnCuoiKyQLBVHQT_Final.Properties.Settings" SettingsPropertyName="QuanLyBenhVien_DoAnCuoiKiConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QuanLyBenhVien_DoAnCuoiKix" Class="QLBVDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=MINHKHOA\TIN;Initial Catalog=QuanLyBenhVien_DoAnCuoiKix;Integrated Security=True" SettingsObjectName="DoAnCuoiKyQLBVHQT_Final.Properties.Settings" SettingsPropertyName="QuanLyBenhVien_DoAnCuoiKixConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BenhNhanArchive" Member="BenhNhanArchives">
+    <Type Name="BenhNhanArchive">
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HoBN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBN" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Khoa" Member="Khoas">
+    <Type Name="Khoa">
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenKhoa" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Khoa_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="PhieuDangKy" />
+      <Association Name="Khoa_BacSi" Member="BacSis" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="BacSi" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LoaiNhanVien" Member="LoaiNhanViens">
+    <Type Name="LoaiNhanVien">
+      <Column Name="MaLoaiNV" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenLoaiNV" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhieuDangKy" Member="PhieuDangKies">
+    <Type Name="PhieuDangKy">
+      <Column Name="MaPhieuDK" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="Khoa_PhieuDangKy" Member="Khoa" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="Khoa" IsForeignKey="true" />
+      <Association Name="BenhNhan_PhieuDangKy" Member="BenhNhan" ThisKey="MaBN" OtherKey="MaBN" Type="BenhNhan" IsForeignKey="true" />
+      <Association Name="NhanVien_PhieuDangKy" Member="NhanVien" ThisKey="MaNV" OtherKey="MaNV" Type="NhanVien" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.BacSi" Member="BacSis">
     <Type Name="BacSi">
       <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="HoBS" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="TenBS" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="ChucVu" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="Khoa_BacSi" Member="Khoa" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="Khoa" IsForeignKey="true" />
     </Type>
   </Table>
-  <Function Name="dbo.spThemBacSi" Method="spThemBacSi">
+  <Table Name="dbo.BenhNhan" Member="BenhNhans">
+    <Type Name="BenhNhan">
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoBN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBN" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="BenhNhan_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaBN" OtherKey="MaBN" Type="PhieuDangKy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NhanVien" Member="NhanViens">
+    <Type Name="NhanVien">
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoNV" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenNV" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="NhanVien_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaNV" OtherKey="MaNV" Type="PhieuDangKy" />
+    </Type>
+  </Table>
+  <Function Name="dbo.spDeleteKhoa" Method="spDeleteKhoa">
+    <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spDeleteLoaiNV" Method="spDeleteLoaiNV">
+    <Parameter Name="MaLoaiNV" Parameter="maLoaiNV" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spGetBN" Method="spGetBN">
+    <ElementType Name="spGetBNResult">
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HoBN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBN" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spGetBNId" Method="spGetBNId">
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="spGetBNIdResult">
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HoBN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBN" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spGetBS" Method="spGetBS">
+    <ElementType Name="spGetBSResult">
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HoBS" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBS" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ChucVu" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spGetKhoa" Method="spGetKhoa">
+    <ElementType Name="spGetKhoaResult">
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenKhoa" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spGetLoaiNV" Method="spGetLoaiNV">
+    <ElementType Name="spGetLoaiNVResult">
+      <Column Name="MaLoaiNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiNV" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spGetPhieuDK" Method="spGetPhieuDK">
+    <ElementType Name="spGetPhieuDKResult">
+      <Column Name="MaPhieuDK" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spInsertBN" Method="spInsertBN">
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="HoBN" Parameter="hoBN" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="TenBN" Parameter="tenBN" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TinhTrang" Parameter="tinhTrang" Type="System.String" DbType="NVarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spInsertBS" Method="spInsertBS">
     <Parameter Name="MaBS" Parameter="maBS" Type="System.String" DbType="NVarChar(10)" />
     <Parameter Name="HoBS" Parameter="hoBS" Type="System.String" DbType="NVarChar(30)" />
     <Parameter Name="TenBS" Parameter="tenBS" Type="System.String" DbType="NVarChar(20)" />
-    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="DateTime" />
     <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
     <Parameter Name="ChucVu" Parameter="chucVu" Type="System.String" DbType="NVarChar(20)" />
     <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.spLayBacSi" Method="spLayBacSi">
-    <ElementType Name="spLayBacSiResult">
+  <Function Name="dbo.spInsertKhoa" Method="spInsertKhoa">
+    <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TenKhoa" Parameter="tenKhoa" Type="System.String" DbType="NVarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spInsertLoaiNV" Method="spInsertLoaiNV">
+    <Parameter Name="MaLoaiNV" Parameter="maLoaiNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TenLoaiNV" Parameter="tenLoaiNV" Type="System.String" DbType="NVarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateBN" Method="spUpdateBN">
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="HoBN" Parameter="hoBN" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="TenBN" Parameter="tenBN" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TinhTrang" Parameter="tinhTrang" Type="System.String" DbType="NVarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateBS" Method="spUpdateBS">
+    <Parameter Name="MaBS" Parameter="maBS" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="HoBS" Parameter="hoBS" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="TenBS" Parameter="tenBS" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="ChucVu" Parameter="chucVu" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateKhoa" Method="spUpdateKhoa">
+    <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TenKhoa" Parameter="tenKhoa" Type="System.String" DbType="NVarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateLoaiNV" Method="spUpdateLoaiNV">
+    <Parameter Name="MaLoaiNV" Parameter="maLoaiNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TenLoaiNV" Parameter="tenLoaiNV" Type="System.String" DbType="NVarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdatePhieuDK" Method="spUpdatePhieuDK">
+    <Parameter Name="MaPhieuDK" Parameter="maPhieuDK" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaNV" Parameter="maNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fnBSInfo" Method="fnBSInfo" IsComposable="true">
+    <ElementType Name="fnBSInfoResult">
       <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="HoBS" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="TenBS" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="ChucVu" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnSoNVKeToan" Method="fnSoNVKeToan" IsComposable="true">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spDeleteBN" Method="spDeleteBN">
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spDeleteBS" Method="spDeleteBS">
+    <Parameter Name="MaBS" Parameter="maBS" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spDeletePhieuDK" Method="spDeletePhieuDK">
+    <Parameter Name="MaPhieuDK" Parameter="maPhieuDK" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spInsertPhieuDK" Method="spInsertPhieuDK">
+    <Parameter Name="MaPhieuDK" Parameter="maPhieuDK" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaNV" Parameter="maNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaKhoa" Parameter="maKhoa" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fnKhoa" Method="fnKhoa" IsComposable="true">
+    <ElementType Name="fnKhoaResult">
+      <Column Name="MaKhoa" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="TenKhoa" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spDeleteNV" Method="spDeleteNV">
+    <Parameter Name="MaNV" Parameter="maNV" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spGetNV" Method="spGetNV">
+    <ElementType Name="spGetNVResult">
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="HoNV" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenNV" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spInsertNV" Method="spInsertNV">
+    <Parameter Name="MaNV" Parameter="maNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="HoNV" Parameter="hoNV" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="TenNV" Parameter="tenNV" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaLoaiNV" Parameter="maLoaiNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="Hide" Parameter="hide" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateNV" Method="spUpdateNV">
+    <Parameter Name="MaNV" Parameter="maNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="HoNV" Parameter="hoNV" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="TenNV" Parameter="tenNV" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaLoaiNV" Parameter="maLoaiNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="Hide" Parameter="hide" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spGetUser" Method="spGetUser">
+    <Parameter Name="MaLoaiNV" Parameter="maLoaiNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="TenLoaiNV" Parameter="tenLoaiNV" Type="System.String" DbType="NVarChar(30)" />
+    <ElementType Name="spGetUserResult">
+      <Column Name="MaLoaiNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiNV" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="HoNV" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenNV" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>
