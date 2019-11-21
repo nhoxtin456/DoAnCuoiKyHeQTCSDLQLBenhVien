@@ -1,6 +1,9 @@
 ﻿use QuanLyBenhVien_DoAnCuoiKix;
 go
 
+select * from dbo.fnKhoa();
+
+
 if OBJECT_ID('viewBenhNhan') is not null
 	drop view viewBenhNhan;
 go
@@ -764,3 +767,289 @@ go
 select LoaiNhanVien.MaLoaiNV, TenLoaiNV,HoNV, TenNV, Password, Hide
 from LoaiNhanVien join NhanVien
 	on LoaiNhanVien.MaLoaiNV=NhanVien.MaLoaiNV;
+
+exec spGetLoaiNV;
+
+exec spGetNV;
+
+exec spGetKhoa;
+
+exec spGetBS;
+
+exec spGetBN;
+
+select * from BenhNhan;
+
+select * from PhieuDangKy;
+
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+go
+
+if OBJECT_ID('BenhNhan_Trung_Insert_Update') is not null
+	drop trigger BenhNhan_Trung_Insert_Update;
+go
+
+create trigger BenhNhan_Trung_Insert_Update
+		on PhieuDangKy
+		after insert, update
+as
+begin
+	declare @MaBN nvarchar(20)
+	select @MaBN = MaBN from inserted
+	if (@MaBN in (select B.MaBN
+				from BenhNhan,
+				(select MaBN
+				from HoSoBenhAn join PhieuDangKy
+					on HoSoBenhAn.MaPhieuDK= PhieuDangKy.MaPhieuDK) B
+				where B.MaBN=BenhNhan.MaBN))
+	begin
+		PRINT N'Tên phieu dang ky cua benh nhan da ton tai trong ho so benh an !!!'
+			ROLLBACK TRAN
+		END
+end
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+begin try
+	insert into PhieuDangKy
+	values (N'PDK04',N'NV01',N'BN01',N'K01');
+
+	print 'thanh cong: da insert duoc';
+end try
+begin catch
+	print 'that bai: khong insert duoc'
+	print 'error ' + convert(varchar, Error_number(), 1)
+		+ ':' + error_message();
+end catch;
+
+go
+
+
+select HoBN,B.MaBN
+from BenhNhan,
+(select MaBN
+from HoSoBenhAn join PhieuDangKy
+	on HoSoBenhAn.MaPhieuDK= PhieuDangKy.MaPhieuDK) B
+where B.MaBN=BenhNhan.MaBN;
+
+select * from dbo.fnKhoa();
+
+select * from Khoa;
+
+exec spGetKhoa;
+go
+
+
+if OBJECT_ID('spTimKiemBNTheoId') is not null
+	drop proc spTimKiemBNTheoId;
+go
+
+
+create proc spTimKiemBNTheoId
+(
+	@MaBN nvarchar(20)
+)
+as
+begin
+	select * from BenhNhan
+	where MaBN like '%'+@MaBN+'%'
+end
+go
+
+
+if OBJECT_ID('spTimKiemBNTheoTen') is not null
+	drop proc spTimKiemBNTheoTen;
+go
+
+create proc spTimKiemBNTheoTen
+(
+	@TenBN nvarchar(20)
+)
+as
+begin
+	select * from BenhNhan
+	where TenBN like '%'+@TenBN+'%'
+end
+
+go
+
+
+-- Thêm User và Login
+use QuanLyBenhVien_DoAnCuoiKix;
+
+if OBJECT_ID('spThemTKDN') is not null
+	drop proc spThemTKDN;
+go
+
+Create Proc spThemTKDN
+	(@TenTaiKhoan varchar(max),@matkhau varchar(max))
+as
+begin
+	begin transaction
+	--thêm login và user
+	declare @SQLStringCreateLogin varchar(max)
+	set @SQLStringCreateLogin= 'CREATE LOGIN ['+@TenTaiKhoan+'] WITH PASSWORD = '''+@matkhau+''''+',DEFAULT_DATABASE=[QuanLyBenhVien_DoAnCuoiKix],
+			DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION = ON, CHECK_POLICY = ON;'
+	exec (@SQLStringCreateLogin)
+
+	declare @SQLStringCreateUser varchar (max)
+	set @SQLStringCreateUser =  'CREATE USER ['+@TenTaiKhoan+'] FOR LOGIN ['+@TenTaiKhoan+']'
+	exec (@SQLStringCreateUser)
+
+
+	if(@@ERROR <> 0 )
+	begin
+		RAISERROR (N'Có lỗi xảy ra khi tạo tài khoản !!!',16, 1)
+		rollback transaction
+		return
+		end
+		commit transaction
+	end
+Go
+
+
+-- Phân quyền cho user
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spPhanQuyenTKDN') is not null
+	drop proc spPhanQuyenTKDN;
+go
+Create Proc spPhanQuyenTKDN
+(
+	@Username nvarchar(10),
+	@Quyen nvarchar(10)
+)
+as
+begin
+	if (@Quyen = 'NhanVien')
+	begin
+	exec sp_addrolemember 'NhanVien', @Username
+	end
+
+	if (@Quyen = 'Admin')
+	begin
+	exec sp_addrolemember 'Admin', @Username
+	exec sp_addsrvrolemember 'Admin', @Username
+	end
+end
+Go
+
+-- Sửa thông tin tài khoản
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spSuaTKDN') is not null
+	drop proc spSuaTKDN;
+go
+
+Create Proc spSuaTKDN
+	(@TenTaiKhoan varchar(max),@matkhau varchar(max))
+as
+begin
+	begin transaction
+	--update login
+	declare @SQLStringCreateLogin varchar(max)
+	set @SQLStringCreateLogin= ' alter LOGIN ['+@TenTaiKhoan+'] WITH  PASSWORD = '''+@matkhau+''''+''
+	exec (@SQLStringCreateLogin)
+
+	if(@@ERROR <> 0 )
+	begin
+		RAISERROR (N'Có lỗi xảy ra !!!',16, 1)
+		rollback transaction
+		return
+		end
+		commit transaction
+	end
+Go
+
+
+-- Xóa tài khoản
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spXoaTKDN') is not null
+	drop proc spXoaTKDN;
+go
+
+Create Proc spXoaTKDN
+	(@TenTaiKhoan varchar(max))
+as
+begin
+	begin transaction
+	--thêm login và user
+	declare @SQLStringCreateUser varchar (max)
+	set @SQLStringCreateUser =  'drop user ['+@TenTaiKhoan+']'
+	exec (@SQLStringCreateUser)
+
+	declare @SQLStringCreateLogin varchar (max)
+	set @SQLStringCreateLogin =  'drop login ['+@TenTaiKhoan+']'
+	exec (@SQLStringCreateLogin)
+
+
+	if(@@ERROR <> 0 )
+	begin
+		RAISERROR (N'Có lỗi xảy ra khi xóa tài khoản !!!',16, 1)
+		rollback transaction
+		return
+		end
+		commit transaction
+	end
+Go
+
+
+-- Đổi mật khẩu
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spDoiMKDN') is not null
+	drop proc spDoiMKDN;
+go
+
+CREATE PROCEDURE spDoiMKDN
+(
+	@Username varchar(100),
+	@Passwordcu nvarchar(100),
+	@Passwordmoi  nvarchar(100))
+as
+begin tran
+	declare @mkcu nvarchar(20)
+	select @mkcu=NhanVien.Password from NhanVien where MaNV=@Username
+	if (@mkcu=@Passwordcu)
+	begin
+		declare @mkmoi nvarchar(20)
+		set @mkmoi=@Passwordmoi 
+		
+		update NhanVien set NhanVien.Password = @Passwordmoi where MaNV= @Username
+		declare @SQLString nvarchar(max)
+		set @SQLString= 'ALTER LOGIN ['+@Username + '] WITH PASSWORD = ''' + @Passwordmoi + ''' OLD_PASSWORD = ''' + @Passwordcu + ''''
+		exec(@SQLString)
+	end
+	if (@@ERROR<>0)
+	begin
+		RAISERROR(N' Có lỗi xảy ra khi đổi mật khẩu', 16, 1)
+		rollback tran
+		return	
+	end		
+	commit tran
+Go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spUndoNV') is not null
+	drop proc spUndoNV;
+go
+
+create proc spUndoNV
+
+as
+begin
+	set IDENTITY_INSERT NhanVien ON
+
+	INSERT INTO NhanVien (
+	SELECT TOP 1 MaBN, HoBN, TenBN, NgaySinh, GioiTinh, TinhTrang
+	FROM NhanVienArchive
+	ORDER BY MaBN DESC;
+
+	DELETE FROM BenhNhanArchive WHERE MaBN = @@IDENTITY;
+	SET IDENTITY_INSERT BenhNhan OFF
+
+end
+
+select * into NhanVienArchive
+from NhanVien;

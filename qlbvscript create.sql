@@ -13,11 +13,12 @@ CREATE TABLE LoaiNhanVien
 	MaLoaiNV NVARCHAR(10) NOT NULL,
 	TenLoaiNV NVARCHAR(30) NOT NULL,
 	CONSTRAINT pk_MaLoaiNhanVien PRIMARY KEY(MaLoaiNV),
-	CONSTRAINT ck_TenLoaiNhanVien UNIQUE(TenLoaiNV)
+	--CONSTRAINT ck_TenLoaiNhanVien UNIQUE(TenLoaiNV)
 );
 INSERT INTO LoaiNhanVien VALUES
 (N'LNV01',N'Nhân viên tiếp tân'),
-(N'LNV02',N'Nhân viên kế toán');
+(N'LNV02',N'Nhân viên kế toán'),
+(N'LNV03',N'Admin');
 
 CREATE TABLE NhanVien
 (
@@ -27,22 +28,35 @@ CREATE TABLE NhanVien
 	NgaySinh DATETIME NOT NULL,
 	GioiTinh NVARCHAR(10) NOT NULL,
 	MaLoaiNV NVARCHAR(10) NOT NULL,
+	Password VARCHAR(20) not null,
+	Hide bit not null,
 	CONSTRAINT pk_MaNV PRIMARY KEY(MaNV)
 );
 INSERT INTO NhanVien VALUES
-(N'NV01',N'Tôn Nữ Như',N'Quỳnh','1999-02-25',N'Nữ',N'LNV01'),
-(N'NV02',N'Nguyễn Thái Phương',N'Thảo','1999-10-16',N'Nữ',N'LNV02');
+(N'NV01',N'Tôn Nữ Như',N'Quỳnh','1999-02-25',N'Nữ',N'LNV01','abc',0),
+(N'NV02',N'Nguyễn Thái Phương',N'Thảo','1999-10-16',N'Nữ',N'LNV02','abc',0),
+(N'NV03',N'Nguyễn Huỳnh Anh',N'Trực','1999-03-20',N'Nam',N'LNV03','abc',0);
 
 CREATE TABLE Khoa
 (
 	MaKhoa NVARCHAR(10) NOT NULL,
 	TenKhoa NVARCHAR(30) NOT NULL,
 	CONSTRAINT pk_MaKhoa PRIMARY KEY(MaKhoa),
-	CONSTRAINT ck_TenKhoa UNIQUE(TenKhoa)
+	--CONSTRAINT ck_TenKhoa UNIQUE(TenKhoa)
 );
 INSERT INTO Khoa VALUES
-(N'K01',N'Khoa ngoại'),
-(N'K02',N'Khoa mắt');
+(N'K01',N'Khoa cấp cứu tổng hợp'),
+(N'K02',N'Khoa ngoại tổng quát'),
+(N'K03',N'Khoa khám bệnh'),
+(N'K04',N'Khoa nội thần kinh tổng quát'),
+(N'K05',N'Khoa xét nghiệm'),
+(N'K06',N'Khoa nội tiêu hóa'),
+(N'K07',N'Khoa cơ xương khớp'),
+(N'K08',N'Khoa hô hấp'),
+(N'K09',N'Khoa tai mũi họng'),
+(N'K10',N'Khoa tim mạch tổng quát'),
+(N'K11',N'Khoa dinh dưỡng'),
+
 
 CREATE TABLE BacSi
 (
@@ -91,7 +105,7 @@ CREATE TABLE LoaiXetNghiem
 	MaLoaiXN NVARCHAR(10) NOT NULL,
 	TenLoaiXN NVARCHAR(30) NOT NULL,
 	CONSTRAINT pk_MaLoaiXN PRIMARY KEY(MaLoaiXN),
-	CONSTRAINT ck_TenLoaiXN UNIQUE(TenLoaiXN)
+	--CONSTRAINT ck_TenLoaiXN UNIQUE(TenLoaiXN)
 );
 INSERT INTO LoaiXetNghiem VALUES
 (N'LXN01',N'Xét nghiệm máu'),
@@ -104,7 +118,7 @@ CREATE TABLE XetNghiem
 	GiaXN FLOAT NOT NULL,
 	MaLoaiXN NVARCHAR(10) NOT NULL,
 	CONSTRAINT pk_MaXN PRIMARY KEY(MaXN),
-	CONSTRAINT ck_TenXN UNIQUE(TenXN)
+	--CONSTRAINT ck_TenXN UNIQUE(TenXN)
 );
 SET ANSI_WARNINGS OFF
 INSERT INTO XetNghiem VALUES
@@ -132,7 +146,7 @@ CREATE TABLE LoaiPhongBenh
 	MaLoaiPhong NVARCHAR(10) NOT NULL,
 	TenLoaiPhong NVARCHAR(20) NOT NULL,
 	CONSTRAINT pk_MaLoaiPhong PRIMARY KEY(MaLoaiPhong),
-	CONSTRAINT ck_TenLoaiPhong UNIQUE(TenLoaiPhong)
+	--CONSTRAINT ck_TenLoaiPhong UNIQUE(TenLoaiPhong)
 );
 INSERT INTO LoaiPhongBenh VALUES
 (N'LP01',N'Phòng vip'),
@@ -145,7 +159,7 @@ CREATE TABLE PhongBenh
 	GiaPhong FLOAT NOT NULL,
 	MaLoaiPhong NVARCHAR(10) NOT NULL,
 	CONSTRAINT pk_MaPhong PRIMARY KEY(MaPhong),
-	CONSTRAINT ck_TenPhong UNIQUE(TenPhong)
+	--CONSTRAINT ck_TenPhong UNIQUE(TenPhong)
 );
 INSERT INTO PhongBenh VALUES
 (N'P01',N'Phòng khám tổng quát',60000,N'LP01'),
@@ -157,7 +171,7 @@ CREATE TABLE Thuoc
 	TenThuoc NVARCHAR(30) NOT NULL,
 	GiaThuoc FLOAT NOT NULL,
 	CONSTRAINT pk_MaThuoc PRIMARY KEY(MaThuoc),
-	CONSTRAINT ck_TenThuoc UNIQUE(TenThuoc)	
+	--CONSTRAINT ck_TenThuoc UNIQUE(TenThuoc)	
 );
 INSERT INTO Thuoc VALUES
 (N'T01',N'Thuốc A',70000),
@@ -171,7 +185,7 @@ CREATE TABLE HoaDon
 	MaNV NVARCHAR(10) NOT NULL,
 	MABA NVARCHAR(10) NOT NULL,
 	CONSTRAINT pk_MaHD PRIMARY KEY(MaHD),
-	CONSTRAINT ck_MaHD UNIQUE(TenHD),
+	--CONSTRAINT ck_MaHD UNIQUE(TenHD),
 	CONSTRAINT ck_MaBA UNIQUE(MABA)
 );
 INSERT INTO HoaDon VALUES
@@ -204,6 +218,12 @@ CREATE TABLE ToaThuoc
 INSERT INTO ToaThuoc VALUES
 (N'T01',N'BA01',50),
 (N'T02',N'BA02',30);
+
+--select *
+--into BenhNhanArchive
+--from BenhNhan
+
+select * from BenhNhanArchive
 
 ALTER TABLE dbo.NhanVien
 WITH NOCHECK ADD CONSTRAINT fk_NhanVien_LoaiNhanVien
