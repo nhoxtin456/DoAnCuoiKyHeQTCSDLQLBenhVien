@@ -226,7 +226,7 @@ exec spDeleteKhoa @MaKhoa=N'K02';
 
 go
 
-use QuanLyBenhVien_DoAnCuoiKi;
+use QuanLyBenhVien_DoAnCuoiKix;
 go
 
 if OBJECT_ID('spGetBS') is not null
@@ -616,17 +616,26 @@ create proc spInsertNV
 	@GioiTinh nvarchar(10),
 	@MaLoaiNV nvarchar(10),
 	@Password varchar(20),
-	@Hide bit
+	@Hide bit,
+	@Quyen varchar(30)
 )
 as
 begin
 	insert into NhanVien
-	values (@MaNV,@HoNV,@TenNV,@NgaySinh,@GioiTinh,@MaLoaiNV,@Password,@Hide)
+	values (@MaNV,@HoNV,@TenNV,@NgaySinh,@GioiTinh,@MaLoaiNV,@Password,@Hide,@Quyen)
 end
 
-exec spInsertNV @MaNV=N'NV03',@HoNV=N'Nguyễn Huỳnh Anh',@TenNV=N'Trực',@NgaySinh='1999-03-20',@GioiTinh=N'Nam',@MaLoaiNV=N'LNV03',@Password='abc',@Hide=0;
+exec spInsertNV @MaNV=N'NV03',@HoNV=N'Nguyễn Huỳnh Anh',@TenNV=N'Trực',@NgaySinh='1999-03-20',@GioiTinh=N'Nam',@MaLoaiNV=N'LNV03',@Password='abc',@Hide=0,@Quyen='admin'
+exec spInsertNV @MaNV=N'NV04', @HoNV=N'Lê Văn', @TenNV=N'Quốc', @NgaySinh='1999-07-23', @GioiTinh=N'Nam', @MaLoaiNV=N'LNV02', @Password='abc', @Hide=0,@Quyen='NVKeToan';
 
 go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+alter table NhanVien
+add Quyen nvarchar(30);
+
+alter table NhanVienArchive
+add Quyen nvarchar(30);
 
 if OBJECT_ID('spUpdateNV') is not null
 	drop proc spUpdateNV;
@@ -641,16 +650,18 @@ create proc spUpdateNV
 	@GioiTinh nvarchar(10),
 	@MaLoaiNV nvarchar(10),
 	@Password varchar(20),
-	@Hide bit	
+	@Hide bit,
+	@Quyen varchar(30)	
 )
 as
 begin
-	update NhanVien set MaNV=@MaNV,HoNV=@HoNV,TenNV=@TenNV,NgaySinh=@NgaySinh,GioiTinh=@GioiTinh,MaLoaiNV=@MaLoaiNV,Password=@Password,Hide=@Hide
+	update NhanVien set MaNV=@MaNV,HoNV=@HoNV,TenNV=@TenNV,NgaySinh=@NgaySinh,GioiTinh=@GioiTinh,MaLoaiNV=@MaLoaiNV,Password=@Password,Hide=@Hide,Quyen=@Quyen
 	where MaNV=@MaNV;
 end
 
-exec spUpdateNV @MaNV=N'NV01', @HoNV=N'Tôn Nữ Như', @TenNV=N'Quỳnh', @NgaySinh='1999-02-25', @GioiTinh=N'Nữ', @MaLoaiNV=N'LNV01', @Password='abc', @Hide=0;
-exec spUpdateNV @MaNV=N'NV02', @HoNV=N'Nguyễn Thái Phương', @TenNV=N'Thảo', @NgaySinh='1999-10-16', @GioiTinh=N'Nữ', @MaLoaiNV=N'LNV02', @Password='abc', @Hide=0;
+exec spUpdateNV @MaNV=N'NV01', @HoNV=N'Tôn Nữ Như', @TenNV=N'Quỳnh', @NgaySinh='1999-02-25', @GioiTinh=N'Nữ', @MaLoaiNV=N'LNV01', @Password='abc', @Hide=0,@Quyen='admin';
+exec spUpdateNV @MaNV=N'NV02', @HoNV=N'Nguyễn Thái Phương', @TenNV=N'Thảo', @NgaySinh='1999-10-16', @GioiTinh=N'Nữ', @MaLoaiNV=N'LNV02', @Password='abc', @Hide=0,@Quyen='admin';
+exec spUpdateNV @MaNV=N'NV04', @HoNV=N'Lê Văn', @TenNV=N'Quốc', @NgaySinh='1999-07-23', @GioiTinh=N'Nam', @MaLoaiNV=N'LNV02', @Password='abc', @Hide=0,@Quyen='NVKeToan';
 
 exec spGetNV;
 go
@@ -843,6 +854,7 @@ exec spGetKhoa;
 go
 
 
+use QuanLyBenhVien_DoAnCuoiKix;
 if OBJECT_ID('spTimKiemBNTheoId') is not null
 	drop proc spTimKiemBNTheoId;
 go
@@ -857,6 +869,9 @@ begin
 	select * from BenhNhan
 	where MaBN like '%'+@MaBN+'%'
 end
+go
+
+exec spTimKiemBNTheoId @MaBN=N'BN01';
 go
 
 
@@ -874,6 +889,7 @@ begin
 	where TenBN like '%'+@TenBN+'%'
 end
 
+exec spTimKiemBNTheoTen @TenBN=N'Hữu';
 go
 
 
@@ -911,11 +927,14 @@ begin
 Go
 
 
+
+
 -- Phân quyền cho user
 use QuanLyBenhVien_DoAnCuoiKix;
 if OBJECT_ID('spPhanQuyenTKDN') is not null
 	drop proc spPhanQuyenTKDN;
 go
+
 Create Proc spPhanQuyenTKDN
 (
 	@Username nvarchar(10),
@@ -1036,20 +1055,1444 @@ if OBJECT_ID('spUndoNV') is not null
 go
 
 create proc spUndoNV
-
+(@MaNV nvarchar(10))
 as
 begin
-	set IDENTITY_INSERT NhanVien ON
+	--set IDENTITY_INSERT NhanVien ON
 
-	INSERT INTO NhanVien (
-	SELECT TOP 1 MaBN, HoBN, TenBN, NgaySinh, GioiTinh, TinhTrang
+	INSERT INTO NhanVien (MaNV, HoNV, TenNV, NgaySinh, GioiTinh, MaLoaiNV, Password, Hide, Quyen)
+	SELECT TOP 1 MaNV, HoNV, TenNV, NgaySinh, GioiTinh, MaLoaiNV, Password, Hide, Quyen
 	FROM NhanVienArchive
-	ORDER BY MaBN DESC;
+	ORDER BY MaNV DESC;
 
-	DELETE FROM BenhNhanArchive WHERE MaBN = @@IDENTITY;
-	SET IDENTITY_INSERT BenhNhan OFF
+	DELETE FROM NhanVienArchive WHERE MaNV = @MaNV;
+	--SET IDENTITY_INSERT NhanVien OFF
 
 end
+go
+
+exec spUndoNV @MaNV=N'NV03';
+select * from NhanVien;
+select * from NhanVienArchive;
+
+select * from LoaiNhanVien;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('NhanVien_DELETE') is not null
+	drop trigger NhanVien_DELETE;
+go
+
+create trigger NhanVien_DELETE on NhanVien after DELETE
+as
+begin
+	INSERT INTO NhanVienArchive (MaNV, HoNV, TenNV, NgaySinh, GioiTinh, MaLoaiNV, Password, Hide, Quyen)
+	SELECT MaNV, HoNV, TenNV, NgaySinh, GioiTinh, MaLoaiNV, Password, Hide, Quyen
+	from deleted;
+end
+
+select * from NhanVien;
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+drop table if exists NhanVienArchive;
+go
 
 select * into NhanVienArchive
 from NhanVien;
+
+use QuanLyBenhVien_DoAnCuoiKix;
+delete NhanVien where MaNV=N'NV03';
+
+select * from NhanVienArchive;
+
+select * from LoaiNhanVien, NhanVien where LoaiNhanVien.MaLoaiNV = NhanVien.MaLoaiNV;
+
+
+-- Mã Nhân Viên tự động tăng khi Thêm Nhân Viên
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('fnIdNVAutoTang') is not null
+	drop function fnIdNVAutoTang;
+Go
+
+Create function fnIdNVAutoTang()
+returns nvarchar(10)	
+As
+Begin
+	Declare @IdNhanVien nvarchar(10)
+	Declare @MaxIdNhanVien nvarchar(10)
+	Declare @Max float
+	Select @MaxIdNhanVien = MAX(MaNV) from NhanVien	
+	if exists (select MaNV from NhanVien)
+			set @Max = CONVERT(float, SUBSTRING(@MaxIdNhanVien,3,8)) + 1
+	else
+			set @Max=1	
+	if (@Max < 10)
+			set @IdNhanVien='NV' + '0' + Convert(varchar(1),@Max)
+	else
+	if (@Max < 100)
+			set @IdNhanVien='NV' + '' + Convert(varchar(2),@Max)
+	else
+			set @IdNhanVien ='NV' +  Convert(varchar(3),@Max)
+	Return @IdNhanVien
+	End
+Go
+
+--exec dbo.fnIdNVAutoTang;
+--exec spInsertNV @MaNV=dbo.fnIdNVAutoTang, @HoNV
+
+
+-- Thêm Nhân Viên
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spThemNhanVien') is not null
+	drop proc spThemNhanVien;
+go
+
+create procedure spThemNhanVien
+( 
+		@MaNV				nvarchar(10),
+		@HoNV				nvarchar(30),
+		@TenNV				nvarchar(20),
+		@Ngaysinh			datetime,
+		@GioiTinh			nvarchar(10),
+		@MaLoaiNV			nvarchar(10),
+		@Password			varchar(20),
+		@Hide				bit,
+		@Quyen				varchar(30)  
+)
+as
+Begin
+	insert into NhanVien(MaNV, HoNV, TenNV, Ngaysinh, GioiTinh, MaLoaiNV,Password,Hide,Quyen)
+	values(@MaNV, @HoNV, @TenNV, @Ngaysinh, @GioiTinh, @MaLoaiNV,@Password,@Hide,@Quyen)
+	Exec spThemTKDN @MaNV,@Password
+	Exec spPhanQuyenTKDN @MaNV,@Quyen
+End
+Go
+
+
+-- Trả về bảng chứa thông tin hóa đơn
+create function ThongTinHoaDon()
+returns table
+as return
+(
+	select *
+	from HoaDon
+)
+go
+
+
+-- Hiển thị thứ trong doanh thu
+CREATE FUNCTION HienThiThu(@ngay DATETIME) 
+RETURNS NVARCHAR(10)
+AS
+BEGIN 
+	DECLARE @st NVARCHAR(10)          
+	SELECT @st=CASE DATEPART(DW,@ngay)                         
+	WHEN 1 THEN 'Chu nhat'                         
+	WHEN 2 THEN 'Thu hai'                             
+	WHEN 3 THEN 'Thu ba'                         
+	WHEN 4 THEN 'Thu tu'                         
+	WHEN 5 THEN 'Thu nam'                         
+	WHEN 6 THEN 'Thu sau'                         
+	ELSE 'Thu bay' 
+END
+RETURN (@st)			/* Trị trả về của hàm */    
+END 
+go
+
+
+-- Tổng tiền doanh thu
+CREATE FUNCTION TongTienDoanhThu
+(
+	@NgayStart nvarchar(20),
+	@NgayEnd nvarchar(20)
+) 
+RETURNS nvarchar(20)
+ AS 
+BEGIN 
+	 DECLARE @money nvarchar(20); 
+	 SELECT @money =Convert(nvarchar(20),sum(GiaHD))
+	 FROM HoaDon 
+	 WHERE CONVERT(datetime,ThoiGian,103) between Convert(datetime,@NgayStart,103) and convert(datetime,@NgayEnd,103); 
+	 IF (@money = null) 
+	   SET @money = 0; 
+	 RETURN @money; 
+END
+go
+
+
+-- Tìm kiếm hồ sơ bệnh án
+create FUNCTION TimKiemHSBA (@ba nvarchar(10))
+RETURNS @SearchHSBA TABLE
+     (
+            IdBA        NVARCHAR(20),
+            TenHSBA     NVARCHAR(50),
+			MaBS		nvarchar(10),
+			MaPhong		nvarchar(10),
+			SoNgayO		datetime,
+			MaPDK		nvarchar(10),	
+			TrangThai nvarchar(50)
+      ) 
+AS
+      BEGIN
+            IF @ba='Tất cả'
+                  INSERT INTO @SearchHSBA
+                  SELECT MaBA,ChuanDoanBenh,MaBS,MaPhong 
+				  FROM HoSoBenhAn
+            else
+                  INSERT INTO @SearchHSBA
+                  SELECT  MaBA,ChuanDoanBenh,MaBS,MaPhong
+				  FROM HoSoBenhAn
+                  WHERE MaBA=@ba
+            RETURN				/*Trả kết quả về cho hàm*/
+      END
+GO
+
+
+-- Khi xóa hồ sơ bệnh án thì thông tin về phiếu đăng ký trong bệnh nhân và hóa đơn cũng sẽ bị xóa luôn
+Go
+CREATE TRIGGER Trigger_XoaBan
+ON HoSoBenhAn instead of delete
+AS
+BEGIN
+	declare @IdHSBA nvarchar(5)
+	select @IdHSBA= MaBA from deleted
+	delete from PhieuDangKy where PhieuDangKy.MaPhieuDK= @IdHSBA
+	delete from HoaDon where HoaDon.MABA= @IdHSBA
+	delete from HoSoBenhAn where HoSoBenhAn.MaBA= @IdHSBA
+end
+GO
+
+
+-- Không được phép xóa nhân viên lớn hơn 45 tuổi
+Create Trigger Trigger_XoaNhanVien
+ON NhanVien
+FOR DELETE
+AS
+BEGIN
+	DECLARE @COUNT INT =0
+	SELECT @COUNT = COUNT (*) FROM deleted
+	WHERE YEAR(GETDATE()) - YEAR(deleted.NgaySinh) > 45
+	IF (@COUNT > 0)
+	BEGIN
+	PRINT N'Không được phép xóa nhân viên lớn hơn 45 tuổi !!!'
+		ROLLBACK TRAN
+	END
+END
+GO
+
+if OBJECT_ID('spGetHSBA') is not null
+	drop proc spGetHSBA;
+go
+
+create proc spGetHSBA
+
+as
+begin
+	select * from HoSoBenhAn;
+end
+
+exec spGetHSBA;
+go
+
+if OBJECT_ID('spInsertHSBA') is not null
+	drop proc spInsertHSBA;
+go
+
+create proc spInsertHSBA
+(
+	@MaBA nvarchar(10),
+	@ChuanDoanBenh nvarchar(30),
+	@MaBS nvarchar(10),
+	@MaPhong nvarchar(10),
+	@MaPhieuDK nvarchar(10),
+	@SoNgayO float
+)
+as
+begin
+	insert into HoSoBenhAn
+	values (@MaBA,@ChuanDoanBenh,@MaBS,@MaPhong,@MaPhieuDK,@SoNgayO);
+end
+
+select * from HoSoBenhAn;
+select * from BacSi;
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('spUpdateHSBA') is not null
+	drop proc spUpdateHSBA;
+go
+
+create proc spUpdateHSBA
+(
+	@MaBA nvarchar(10),
+	@ChuanDoanBenh nvarchar(30),
+	@MaBS nvarchar(10),
+	@MaPhong nvarchar(10),
+	@MaPhieuDK nvarchar(10),
+	@SoNgayO float
+)
+as
+begin
+	update HoSoBenhAn set ChuanDoanBenh=@ChuanDoanBenh, MaBS=@MaBS, MaPhong=@MaPhong, MaPhieuDK=@MaPhieuDK, SoNgayO=@SoNgayO
+	where MaBA=@MaBA
+end
+exec spUpdateHSBA @MaBA=N'BA01',@ChuanDoanBenh=N'Viêm dạ dày',@MaBS=N'BS01',@MaPhong=N'P01',@MaPhieuDK=N'PDK01',@SoNgayO=3;
+
+exec spUpdateHSBA @MaBA=N'BA01',@ChuanDoanBenh=N'Viêm dạ dày',@MaBS=N'BS01',@MaPhong=N'P01',@MaPhieuDK=N'PDK01',@SoNgayO=3;
+
+exec spUpdateHSBA @MaBA=N'BA02',@ChuanDoanBenh=N'Viêm dạ dày',@MaBS=N'BN02',@MaPhong=N'P02',@MaPhieuDK=N'PDK02',@SoNgayO=5;
+
+exec spUpdateHSBA @MaBA=N'BA02',@ChuanDoanBenh=N'Viêm ruột thừa',@MaBS=N'BS02',@MaPhong=N'P02',@MaPhieuDK=N'PDK02',@SoNgayO=5;
+
+go
+
+if OBJECT_ID ('spDeleteHSBA') is not null
+	drop proc spDeleteHSBA;
+go
+
+create proc spDeleteHSBA
+(@MaBA nvarchar(10))
+as
+begin
+	delete from HoSoBenhAn where MaBA=@MaBA;
+end
+
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('spGetHD') is not null
+	drop proc spGetHD;
+go
+
+create proc spGetHD
+as
+begin
+	select * from HoaDon;
+end
+
+if OBJECT_ID ('spInsertHD') is not null
+	drop proc spInsertHD;
+go
+
+create proc spInsertHD
+(
+	@MaHD nvarchar(10),
+	@TenHD nvarchar(30),
+	@GiaHD float,
+	@MaNV nvarchar(10),
+	@MaBA nvarchar(10)
+)
+as
+begin
+	insert into HoaDon
+	values (@MaHD,@TenHD,@GiaHD,@MaNV,@MaBA);
+end
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spUpdateHD') is not null
+	drop proc spUpdateHD;
+go
+
+create proc spUpdateHD
+(
+	@MaHD nvarchar(10),
+	@TenHD nvarchar(30),
+	@GiaHD float,
+	@MaNV nvarchar(10),
+	@MaBA nvarchar(10)
+)
+as
+begin
+	update HoaDon set TenHD=@TenHD,GiaHD=@GiaHD,MaNV=@MaNV,MABA=@MaBA 
+	where MaHD=@MaHD;
+end
+
+exec spUpdateHD @MaHD=N'HD02', @TenHD=N'Hóa đơn B', @GiaHD=500000, @MaNV=N'NV02', @MaBA=N'BA02';
+
+select * from HoaDon;
+go
+
+
+if OBJECT_ID('spDeleteHD') is not null
+	drop proc spDeleteHD;
+go
+
+create proc spDeleteHD
+(@MaHD nvarchar(10))
+as
+begin
+	delete from HoaDon where MaHD=@MaHD;
+end
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spGetLoaiPhong') is not null
+	drop proc spGetLoaiPhong;
+go
+
+create proc spGetLoaiPhong
+as
+begin
+	select * from LoaiPhongBenh;
+end
+go
+
+
+if OBJECT_ID('spInsertLoaiPhong') is not null
+	drop proc spInsertLoaiPhong;
+go
+
+create proc spInsertLoaiPhong
+(@MaLoaiPhong nvarchar(10),@TenLoaiPhong nvarchar(20),@GiaPhong float)
+as
+begin
+	insert into LoaiPhongBenh values(@MaLoaiPhong,@TenLoaiPhong,@GiaPhong);
+end
+go
+
+
+if OBJECT_ID('spUpdateLoaiPhong') is not null
+	drop proc spUpdateLoaiPhong;
+go
+
+create proc spUpdateLoaiPhong
+(@MaLoaiPhong nvarchar(10),@TenLoaiPhong nvarchar(20),@GiaPhong float)
+as
+begin
+	update LoaiPhongBenh set TenLoaiPhong=@TenLoaiPhong, GiaPhong=@GiaPhong where MaLoaiPhong=@MaLoaiPhong;
+end
+
+exec spUpdateLoaiPhong @MaLoaiPhong=N'LP01',@TenLoaiPhong=N'Phòng vip',@GiaPhong=60000;
+
+exec spUpdateLoaiPhong @MaLoaiPhong=N'LP02',@TenLoaiPhong=N'Phòng thường',@GiaPhong=70000;
+
+select * from LoaiPhongBenh;
+
+go
+
+
+if OBJECT_ID('spDeleteLoaiPhong') is not null
+	drop proc spDeleteLoaiPhong;
+go
+
+create proc spDeleteLoaiPhong (@MaLoaiPhong nvarchar(10))
+as
+begin
+	delete from LoaiPhongBenh where MaLoaiPhong=@MaLoaiPhong;
+end
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spGetPhong') is not null
+	drop proc spGetPhong;
+go
+
+create proc spGetPhong as
+begin
+	select * from PhongBenh;
+end
+go
+
+
+if OBJECT_ID('spInsertPhong') is not null
+	drop proc spInsertPhong;
+go
+
+create proc spInsertPhong
+(
+	@MaPhong nvarchar(10),
+	@TenPhong nvarchar(30),
+	@MaLoaiPhong nvarchar(10)
+)
+as
+begin
+	insert into PhongBenh values (@MaPhong,@TenPhong,@MaLoaiPhong);
+end
+go
+
+
+if OBJECT_ID('spUpdatePhong') is not null
+	drop proc spUpdatePhong;
+go
+
+create proc spUpdatePhong
+(
+	@MaPhong nvarchar(10),
+	@TenPhong nvarchar(30),
+	@MaLoaiPhong nvarchar(10)
+)
+as
+begin
+	update PhongBenh set TenPhong=@TenPhong,MaLoaiPhong=@MaLoaiPhong
+	where MaPhong=@MaPhong;
+end
+go
+
+
+if OBJECT_ID('spDeletePhong') is not null
+	drop proc spDeletePhong;
+go
+
+create proc spDeletePhong(@MaPhong nvarchar(10)) as begin
+	delete from PhongBenh where MaPhong=@MaPhong;
+end
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spGetLoaiXN') is not null
+	drop proc spGetLoaiXN;
+go
+
+create proc spGetLoaiXN as begin select * from LoaiXetNghiem; end 
+select * from LoaiXetNghiem;
+go
+
+
+if OBJECT_ID('spInsertLoaiXN') is not null
+	drop proc spInsertLoaiXN;
+go
+
+create proc spInsertLoaiXN(@MaLoaiXN nvarchar(10),@TenLoaiXN nvarchar(30),@GiaLXN float) as begin
+	insert into LoaiXetNghiem values(@MaLoaiXN,@TenLoaiXN,@GiaLXN);
+end
+go
+
+
+if OBJECT_ID('spUpdateLoaiXN') is not null
+	drop proc spUpdateLoaiXN;
+go
+
+create proc spUpdateLoaiXN(@MaLoaiXN nvarchar(10),@TenLoaiXN nvarchar(30),@GiaLXN float) as begin
+	update LoaiXetNghiem set TenLoaiXN=@TenLoaiXN, GiaLXN=@GiaLXN where MaLoaiXN=@MaLoaiXN;
+end
+
+exec spUpdateLoaiXN @MaLoaiXN=N'LXN01',@TenLoaiXN=N'Xét nghiệm máu',@GiaLXN=500000;
+
+exec spUpdateLoaiXN @MaLoaiXN=N'LXN02',@TenLoaiXN=N'Xét nghiệm y khoa',@GiaLXN=2000000;
+
+select * from LoaiXetNghiem;
+
+go
+
+
+if OBJECT_ID('spDeleteLoaiXN') is not null
+	drop proc spDeleteLoaiXN;
+go
+
+create proc spDeleteLoaiXN(@MaLoaiXN nvarchar(10)) as begin
+	delete from LoaiXetNghiem where MaLoaiXN=@MaLoaiXN;
+end
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spGetXN') is not null
+	drop proc spGetXN;
+go
+
+create proc spGetXN as begin select * from XetNghiem;
+end
+
+select * from XetNghiem;
+
+go
+
+alter table XetNghiem
+alter column TenXN nvarchar(50);
+
+
+if OBJECT_ID('spInsertXN') is not null
+	drop proc spInsertXN;
+go
+
+create proc spInsertXN
+(
+	@MaXN nvarchar(10),
+	@TenXN nvarchar(20),
+	@MaLoaiXN nvarchar(10)
+)
+as
+begin
+	insert into XetNghiem
+	values (@MaXN,@TenXN,@MaLoaiXN);
+end
+go
+
+if OBJECT_ID ('spUpdateXN') is not null
+	drop proc spUpdateXN;
+go
+
+create proc spUpdateXN
+(
+	@MaXN nvarchar(10),
+	@TenXN nvarchar(50),
+	@MaLoaiXN nvarchar(10)
+)
+as
+begin
+	update XetNghiem set TenXN=@TenXN,MaLoaiXN=@MaLoaiXN
+	where MaXN=@MaXN;
+end
+
+exec spUpdateXN @MaXN=N'XN01',@TenXN=N'Xét nghiệm sinh hóa máu',@MaLoaiXN=N'LXN01';
+
+select * from XetNghiem;
+
+go
+
+if OBJECT_ID ('spDeleteXN') is not null
+	drop proc spDeleteXN;
+go
+
+create proc spDeleteXN
+(@MaXN nvarchar(10))
+as
+begin
+	delete from XetNghiem where MaXN=@MaXN;
+end
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('spGetToaXN') is not null
+	drop proc spGetToaXN;
+go
+
+create proc spGetToaXN
+as
+begin
+	select * from ToaXetNghiem;
+end
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('spGetToaThuoc') is not null
+	drop proc spGetToaThuoc;
+go
+
+create proc spGetToaThuoc
+as
+begin
+	select * from ToaThuoc;
+end
+exec spGetToaThuoc;
+go
+
+if OBJECT_ID ('spGetThuoc') is not null
+	drop proc spGetThuoc;
+go
+
+create proc spGetThuoc
+as
+begin
+	select * from Thuoc;
+end
+go
+
+
+if OBJECT_ID ('spInsertThuoc') is not null
+	drop proc spInsertThuoc;
+go
+
+create proc spInsertThuoc
+(@MaThuoc nvarchar(10), @TenThuoc nvarchar(30), @GiaThuoc float)
+as
+begin
+	insert into Thuoc
+	values (@MaThuoc, @TenThuoc, @GiaThuoc);
+end
+go
+
+
+if OBJECT_ID ('spUpdateThuoc') is not null
+	drop proc spUpdateThuoc;
+go
+
+create proc spUpdateThuoc
+(@MaThuoc nvarchar(10), @TenThuoc nvarchar(30), @GiaThuoc float)
+as
+begin
+	update Thuoc set TenThuoc=@TenThuoc, GiaThuoc=@GiaThuoc
+	where MaThuoc=@MaThuoc;
+end
+go
+
+
+if OBJECT_ID ('spDeleteThuoc') is not null
+	drop proc spDeleteThuoc;
+go
+
+create proc spDeleteThuoc
+(@MaThuoc nvarchar(10))
+as
+begin
+	delete from Thuoc where MaThuoc=@MaThuoc;
+end
+go
+
+select * from ToaThuoc;
+
+
+exec spGetKhoa
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+go
+
+if OBJECT_ID ('fn')
+
+
+create function fnSoNVKeToan () returns int
+begin	
+	return 	
+	(select count (B.TenLoaiNV) as SoLoaiNV
+	from(
+		select TenLoaiNV
+		from NhanVien ,LoaiNhanVien
+		where NhanVien.MaLoaiNV = LoaiNhanVien.MaLoaiNV
+		and TenLoaiNV = N'Nhân viên kế toán') B)
+end	;
+go
+
+
+
+
+select HoSoBenhAn.MaBA, ChuanDoanBenh, MaBS, MaPhong, SoNgayO, MaPhieuDK, MaXN, NgayXN, TenLoaiXN, TenXN, GiaLXN
+from HoSoBenhAn join dbo.fbC() as XN
+	on HoSoBenhAn.MaBA = XN.MaBA;
+
+
+where HoSoBenhAn.MaBA = A.MaBA;	 
+		 
+
+
+alter table HoSoBenhAn
+add SoNgayO float;
+
+alter table HoSoBenhAn
+drop column SoNgayO;
+		 
+
+select * from HoaDon;
+		 
+if OBJECT_ID ('fnB') is not null
+	drop function fbB;
+go
+
+create function fnB ()
+returns table
+as
+return  (select B.MaXN, B.TenLoaiXN, B.TenXN, B.GiaXN
+		 from (	
+			select MaXN , TenLoaiXN, TenXN, GiaXN
+			from LoaiXetNghiem join XetNghiem
+				on LoaiXetNghiem.MaLoaiXN = XetNghiem.MaLoaiXN
+		  ) B)
+
+
+
+select MaBA
+from (
+select  MaBA
+from ToaXetNghiem join dbo.fnB() as BN
+	on ToaXetNghiem.MaXN = BN.MaXN ) A
+
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('fnC') is not null
+	drop function fbC;
+go
+
+create function fbC()
+returns table
+as
+return 
+	(
+		select A.MaBA, A.MaXN, A.NgayXN, A.TenLoaiXN, A.TenXN, A.GiaXN
+		from (
+		select MaBA, ToaXetNghiem.MaXN, NgayXN, TenLoaiXN, TenXN, GiaXN
+		from ToaXetNghiem join dbo.fnB() as BN
+			on ToaXetNghiem.MaXN = BN.MaXN ) A
+	)
+go
+
+
+		select  MaBA, ToaXetNghiem.MaXN, NgayXN, TenLoaiXN, TenXN, GiaXN
+		from ToaXetNghiem join dbo.fnB() as BN
+			on ToaXetNghiem.MaXN = BN.MaXN
+
+select HoaDon.MABA, TenHD, GiaHD, ChuanDoanBenh, MaBS, MaPhong, SoNgayO, MaPhieuDK
+from HoaDon join HoSoBenhAn
+	on HoaDon.MABA = HoSoBenhAn.MaBA;
+
+select * from HoaDon;
+
+select *
+from HoaDon join NhanVien
+	on HoaDon.MaNV = NhanVien.MaNV;
+
+select * from HoSoBenhAn;
+
+
+select MaPhong, TenPhong, GiaPhong, TenLoaiPhong
+from PhongBenh join LoaiPhongBenh
+	on PhongBenh.MaLoaiPhong = LoaiPhongBenh.MaLoaiPhong;
+
+
+select HoaDon.MABA, MaHD, TenHD, GiaHD, MaNV, ChuanDoanBenh, MaBS, MaPhong, MaPhieuDK, SoNgayO
+from HoaDon join HoSoBenhAn
+	on HoaDon.MABA = HoSoBenhAn.MaBA;
+
+
+
+alter table LoaiXetNghiem
+add GiaLXN float;
+
+alter table LoaiPhongBenh
+add GiaPhong float;
+
+alter table XetNghiem
+drop column GiaXN;
+
+alter table PhongBenh
+drop column GiaPhong;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('fnPhongLoaiPhong') is not null
+	drop function fnPhongLoaiPhong;
+go
+
+create function fnPhongLoaiPhong ()
+returns table
+as
+return	
+		select MaPhong, TenPhong, GiaPhong, TenLoaiPhong
+		from LoaiPhongBenh join PhongBenh
+			on LoaiPhongBenh.MaLoaiPhong = PhongBenh.MaLoaiPhong
+go
+
+
+select * from LoaiPhongBenh;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('fnHSBAPhong') is not null
+	drop function fnHSBAPhong;
+go
+
+create function fnHSBAPhong ()
+returns table
+as
+return	
+	select MaBA, ToaXetNghiem.MaXN, NgayXN, TenLoaiXN, TenXN, GiaXN
+	from  join dbo.fnPhongLoaiPhong() as PB
+		on .MaPhong = PB.;
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('fnHSBAToaThuoc') is not null
+	drop function fnHSBAToaThuoc;
+go
+
+create function fnHSBAToaThuoc ()
+returns table
+as
+return
+		select tb.MaBA, th.TenThuoc, tb.SoLuong, th.GiaThuoc
+		from dbo.ToaThuoc tb
+			join dbo.Thuoc th
+				on tb.MaThuoc=th.MaThuoc
+			join dbo.HoSoBenhAn hs
+				on tb.MaBA=hs.MaBA;
+
+go
+
+
+select tb.MaBA, th.TenThuoc, tb.SoLuong, th.GiaThuoc
+from dbo.ToaThuoc tb
+		join dbo.Thuoc th
+			on tb.MaThuoc=th.MaThuoc
+		join dbo.HoSoBenhAn hs
+			on tb.MaBA=hs.MaBA;
+		
+select * from HoSoBenhAn;
+
+select a.MaBA, a.MaThuoc, a.SoLuong, b.TenThuoc, b.GiaThuoc
+from dbo.ToaThuoc a, dbo.Thuoc b
+where a.MaThuoc = b.MaThuoc
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('fnHSBAPhong') is not null
+	drop function fnHSBAPhong;
+go
+
+create function fnHSBAPhong()
+returns table
+as
+return
+	select hs.MaBA, th.TenLoaiPhong, th.GiaPhong, tb.TenPhong
+		from dbo.PhongBenh tb
+			join dbo.LoaiPhongBenh th
+				on tb.MaLoaiPhong=th.MaLoaiPhong
+			join dbo.HoSoBenhAn hs
+				on tb.MaPhong=hs.MaPhong;
+go
+
+select p.MaLoaiPhong, t.MaPhong, p.TenLoaiPhong, p.GiaPhong, t.TenPhong
+from LoaiPhongBenh p join PhongBenh t
+	on p.MaLoaiPhong = t.MaLoaiPhong;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('fnHSBATong') is not null
+	drop function fnHSBATong;
+go
+
+create function fnHSBATong()
+returns table
+as
+return
+	select hs.MaBA, ChuanDoanBenh, MaBS, MaPhong, SoNgayO, MaPhieuDK, MaXN, NgayXN, TenLoaiXN, TenXN, GiaLXN, TenThuoc, SoLuong, GiaThuoc, TenLoaiPhong, GiaPhong, TenPhong
+		from dbo.HoSoBenhAn hs
+			join dbo.fnHSBAPhong() BP
+				on hs.MaBA = BP.MaBA
+			join dbo.fnHSBAToaThuoc() BT
+				on hs.MaBA = BT.MaBA
+			join dbo.fbC() C
+				on hs.MaBA = C.MaBA;
+go
+
+
+if OBJECT_ID ('fnHSBAHD') is not null
+	drop function fnHSBAHD;
+go
+
+create function fnHSBAHD()
+returns table
+as
+return
+	select hd.MaHD, hd.TenHD, hd.MaNV, hd.GiaHD, t.*
+	from dbo.HoaDon hd, dbo.fnHSBATong() t
+	where hd.MABA = t.MaBA;
+go
+
+
+select hs.MaBA, ChuanDoanBenh, MaBS, MaPhong, SoNgayO, MaPhieuDK, MaXN, NgayXN, TenLoaiXN, TenXN, GiaLXN, TenThuoc, SoLuong, GiaThuoc, TenLoaiPhong, GiaPhong, TenPhong
+		from dbo.HoSoBenhAn hs
+			join dbo.fnHSBAPhong() BP
+				on hs.MaBA = BP.MaBA
+			join dbo.fnHSBAToaThuoc() BT
+				on hs.MaBA = BT.MaBA
+			join dbo.fbC() C
+				on hs.MaBA = C.MaBA;
+
+go
+
+select * from dbo.fnHSBAHD();
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+go
+
+if OBJECT_ID ('viewHoaDon') is not null
+	drop view viewHoaDon;
+go
+
+create view viewHoaDon
+--with schemabinding
+as
+select MaHD, TenHD, GiaHD, MaBA, SoNgayO, TenLoaiXN, GiaLXN, TenThuoc, SoLuong, GiaThuoc, TenLoaiPhong, GiaPhong
+from dbo.fnHSBAHD() as BN
+where MaHD = (select MaHD from HoaDon where TenHD = N'Hóa đơn A')
+--group by BN.TenHD;
+go
+
+select * from viewHoaDon
+--group by HoaDon.TenHD;
+
+
+if OBJECT_ID ('viewHD_Insert_Update') is not null
+	drop trigger viewHD_Insert_Update;
+go
+
+create trigger viewHD_Insert_Update
+	on viewHoaDon
+	instead of insert,update
+as
+
+declare @MaHD nvarchar(10), @TenHD nvarchar(30), @GiaHD float, @MaBA nvarchar(10), @SoNgayO float, @TenLoaiXN nvarchar(30), @GiaLXN float, @TenThuoc nvarchar(30), @SoLuong float,
+		@GiaThuoc float, @TenLoaiPhong nvarchar(30), @GiaPhong float, @TestRowCount int, @TongTien float;
+
+select @TestRowCount = COUNT(*) from inserted;
+if @TestRowCount = 1
+	begin
+		select @MaHD = MaHD, @TenHD = TenHD, @GiaHD = GiaHD, @MaBA = MaBA, @SoNgayO = SoNgayO,
+			   @TenLoaiXN = TenLoaiXN, @GiaLXN = GiaLXN, @TenThuoc = TenThuoc, @SoLuong = SoLuong,
+			   @GiaThuoc = GiaThuoc, @TenLoaiPhong = TenLoaiPhong, @GiaPhong = GiaPhong
+		from inserted
+
+		if (@MaHD is not null and @MaBA is not null)
+			begin
+				select @MaHD = MaHD, @MaBA = MABA
+				from HoaDon
+				where TenHD = N'Hóa đơn A';
+
+				set @TongTien = @GiaHD + @GiaPhong * @SoNgayO + @GiaLXN + @GiaThuoc * @SoLuong;
+				
+				update HoaDon set GiaHD=@TongTien
+				where TenHD = N'Hóa đơn A'
+				PRINT 'Maximum invoice is $' + CONVERT(varchar,@TongTien,1) + '.';
+
+			end
+
+	end
+else
+	throw 50027, 'loi fail.', 1;
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+update viewHoaDon
+set GiaHD=500000
+where TenHD = N'Hóa đơn B';
+
+
+select * from HoaDon;
+
+
+
+
+
+--CREATE VIEW IBM_Invoices
+-- AS
+-- SELECT InvoiceNumber, InvoiceDate, InvoiceTotal
+-- FROM Invoices
+-- WHERE VendorID = (SELECT VendorID FROM Vendors WHERE VendorName = 'IBM');
+-- GO
+
+use QuanLyBenhVien_DoAnCuoiKix;
+go
+
+if OBJECT_ID ('fnTinhTongHD') is not null
+	drop function fnTinhTongHD;
+go
+
+create function fnTinhTongHD (@MaHD nvarchar(10))
+	returns float
+as
+begin
+	declare @a nvarchar(20),
+	 @TenHD nvarchar(30), @GiaHD float, @MaBA nvarchar(10), @SoNgayO float, @TenLoaiXN nvarchar(30), @GiaLXN float, @TenThuoc nvarchar(30), @SoLuong float,
+		@GiaThuoc float, @TenLoaiPhong nvarchar(30), @GiaPhong float, @TestRowCount int, @TongTien float;
+	set @GiaLXN = GiaLXN, @GiaPhong = GiaPhong, @GiaThuoc = GiaThuoc
+	from dbo.fnHSBAHD()
+	if @GiaLXN is not null and @GiaPhong is not null and @GiaThuoc is not null
+
+
+
+			select @a = MaHD, @TenHD = TenHD, @GiaHD = GiaHD, @MaBA = MaBA, @SoNgayO = SoNgayO,
+					   @TenLoaiXN = TenLoaiXN, @GiaLXN = GiaLXN, @TenThuoc = TenThuoc, @SoLuong = SoLuong,
+					   @GiaThuoc = GiaThuoc, @TenLoaiPhong = TenLoaiPhong, @GiaPhong = GiaPhong
+			from dbo.fnHSBAHD()
+			where @MaHD = MaHD;
+	
+	set @TongTien = @GiaHD + @GiaPhong * @SoNgayO + @GiaLXN + @GiaThuoc * @SoLuong;
+				
+				
+	return @TongTien;
+end
+go
+
+select * from LoaiXetNghiem;
+
+select * from PhieuDangKy;
+
+select * from BenhNhan;
+
+select * from BenhNhanArchive;
+
+exec spInsertBN @MaBN=N'BN03', @HoBN=N'Lê Văn', @TenBN=N'Quốc', @NgaySinh='1999-05-15', @GioiTinh=N'Nam', @TinhTrang=N'Bình thường';
+
+exec spInsertBN @MaBN=N'BN05', @HoBN=N'Lê Văn', @TenBN=N'Quốc2', @NgaySinh='1999-05-15', @GioiTinh=N'Nam', @TinhTrang=N'Bình thường';
+
+exec spDeleteBN @MaBN=N'BN04';
+
+
+select dbo.fnTinhTongHD(N'HD02') as TongTien;
+
+select * from dbo.fnHSBAHD();
+
+select * from PhieuDangKy;
+
+
+
+
+
+	go
+	CREATE TRIGGER Trigger_XoaHD
+	ON HoaDon instead of delete
+	AS
+	BEGIN
+		declare @IdNV nvarchar(10), @IdBA nvarchar(10)
+		select @IdNV= MaNV, @IdBA= MABA 
+		from deleted
+		delete from HoSoBenhAn where HoSoBenhAn.MaBA= @IdBA
+		delete from NhanVien where NhanVien.MaNV= @IdNV 
+		
+	end
+
+
+Go
+	Create function IdNhanVienTuDongTang()
+	returns varchar(10)	
+	As
+	Begin
+		Declare @IdNhanVien varchar(10)
+		Declare @MaxIdNhanVien varchar(10)
+		Declare @Max float
+		Select @MaxIdNhanVien = MAX(IdNhanVien) from NhanVien	
+		if exists (select IdNhanVien from NhanVien)
+				set @Max = CONVERT(float, SUBSTRING(@MaxIdNhanVien,3,8)) + 1
+		else
+				set @Max=1	
+		if (@Max < 10)
+				set @IdNhanVien='NV' + '0' + Convert(varchar(1),@Max)
+		else
+		if (@Max < 100)
+				set @IdNhanVien='NV' + '' + Convert(varchar(2),@Max)
+		else
+				set @IdNhanVien ='NV' +  Convert(varchar(3),@Max)
+		Return @IdNhanVien
+		End
+	Go
+
+
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('BN_Insert') is not null
+	drop trigger BN_Insert;
+go
+
+create trigger BN_Insert on BenhNhan after insert
+as
+
+declare @MaPhieuDK nvarchar(10), @MaNV nvarchar(10), @MaBN nvarchar(10), @MaKhoa nvarchar(10)
+
+
+
+select @MaPhieuDK = MaPhieuDK, @MaNV = MaNV, @MaBN = MaBN, @MaKhoa = MaKhoa 
+from PhieuDangKy
+where MaPhieuDK = @MaPhieuDK
+
+exec spInsertPhieuDK @MaPhieuDK=N'PDK05', @MaNV=N'NV01', @MaBN=N'BN05', @MaKhoa=N'K02';
+
+
+
+--use QuanLyBenhVien_DoAnCuoiKix;
+--if OBJECT_ID ('BenhNhan')
+
+
+
+select * into PhieuDangKyArchive
+from PhieuDangKy;
+
+select * into HoaDonArchive
+from HoaDon;
+
+select * into HoSoBenhAnArchive
+from HoSoBenhAn;
+
+
+
+
+
+
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spUndoPDK') is not null
+	drop proc spUndoPDK;
+go
+
+create proc spUndoPDK
+(@MaPDK nvarchar(10))
+as
+begin
+	--set IDENTITY_INSERT NhanVien ON
+
+	INSERT INTO PhieuDangKy (MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT TOP 1 MaPhieuDK, MaNV, MaBN, MaKhoa
+	FROM PhieuDangKyArchive
+	ORDER BY MaPhieuDK DESC;
+
+	DELETE FROM PhieuDangKyArchive WHERE MaPhieuDK = @MaPDK;
+	--SET IDENTITY_INSERT NhanVien OFF
+
+end
+go
+
+exec spUndoNV @MaPDK=N'PDK01';
+
+select * from PhieuDangKy;
+
+select * from PhieuDangKyArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('PhieuDK_DELETE') is not null
+	drop trigger PhieuDK_DELETE;
+go
+
+create trigger PhieuDK_DELETE on PhieuDangKy after DELETE
+as
+begin
+	INSERT INTO PhieuDangKyArchive (MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT MaPhieuDK, MaNV, MaBN, MaKhoa
+	from deleted;
+end
+
+select * from PhieuDangKy;
+go
+
+--use QuanLyBenhVien_DoAnCuoiKix;
+--drop table if exists PhieuDangKyArchive;
+--go
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+delete PhieuDangKy where MaPhieuDK=N'PDK01';
+
+select * from PhieuDangKyArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spUndoPDK') is not null
+	drop proc spUndoPDK;
+go
+
+create proc spUndoPDK
+(@MaPDK nvarchar(10))
+as
+begin
+	--set IDENTITY_INSERT NhanVien ON
+
+	INSERT INTO PhieuDangKy (MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT TOP 1 MaPhieuDK, MaNV, MaBN, MaKhoa
+	FROM PhieuDangKyArchive
+	ORDER BY MaPhieuDK DESC;
+
+	DELETE FROM PhieuDangKyArchive WHERE MaPhieuDK = @MaPDK;
+	--SET IDENTITY_INSERT NhanVien OFF
+
+end
+go
+
+exec spUndoNV @MaPDK=N'PDK01';
+
+select * from PhieuDangKy;
+
+select * from PhieuDangKyArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('PhieuDK_DELETE') is not null
+	drop trigger PhieuDK_DELETE;
+go
+
+create trigger PhieuDK_DELETE on PhieuDangKy after DELETE
+as
+begin
+	INSERT INTO PhieuDangKyArchive (MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT MaPhieuDK, MaNV, MaBN, MaKhoa
+	from deleted;
+end
+
+select * from PhieuDangKy;
+go
+
+--use QuanLyBenhVien_DoAnCuoiKix;
+--drop table if exists PhieuDangKyArchive;
+--go
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+delete PhieuDangKy where MaPhieuDK=N'PDK01';
+
+select * from PhieuDangKyArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spUndoHSBA') is not null
+	drop proc spUndoHSBA;
+go
+
+create proc spUndoHSBA
+(@MaBA nvarchar(10))
+as
+begin
+	--set IDENTITY_INSERT NhanVien ON
+
+	INSERT INTO HosHoSoBenhAn(MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT TOP 1 MaPhieuDK, MaNV, MaBN, MaKhoa
+	FROM PhieuDangKyArchive
+	ORDER BY MaPhieuDK DESC;
+
+	DELETE FROM PhieuDangKyArchive WHERE MaPhieuDK = @MaPDK;
+	--SET IDENTITY_INSERT NhanVien OFF
+
+end
+go
+
+exec spUndoNV @MaPDK=N'PDK01';
+
+select * from PhieuDangKy;
+
+select * from PhieuDangKyArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('PhieuDK_DELETE') is not null
+	drop trigger PhieuDK_DELETE;
+go
+
+create trigger PhieuDK_DELETE on PhieuDangKy after DELETE
+as
+begin
+	INSERT INTO PhieuDangKyArchive (MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT MaPhieuDK, MaNV, MaBN, MaKhoa
+	from deleted;
+end
+
+select * from PhieuDangKy;
+go
+
+--use QuanLyBenhVien_DoAnCuoiKix;
+--drop table if exists PhieuDangKyArchive;
+--go
+
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+delete PhieuDangKy where MaPhieuDK=N'PDK01';
+
+select * from PhieuDangKyArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('HSBA_Delete') is not null
+	drop trigger HSBA_Delete;
+go
+
+create trigger HSBA_Delete on HoSoBenhAn after delete
+as
+begin
+	insert into HoSoBenhAnArchive (MaBA, ChuanDoanBenh, MaBS, MaPhong, MaPhieuDK, SoNgayO)
+	select MaBA, ChuanDoanBenh, MaBS, MaPhong, MaPhieuDK, SoNgayO
+	from deleted
+end
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+delete HoSoBenhAn where MaBA=N'BA01';
+
+select * from HoSoBenhAn;
+
+select * from HoSoBenhAnArchive;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('HD_Delete') is not null
+	drop trigger HD_Delete;
+go
+
+create trigger HD_Delete on HoaDon after delete
+as
+insert into HoaDonArchive 
+	(MaHD, TenHD, GiaHD, MaNV, MABA)
+	select MaHD, TenHD, GiaHD, MaNV, MABA
+	from deleted
+go
+
+use QuanLyBenhVien_DoAnCuoiKix;
+delete from HoaDon where MaHD = N'HD01';
+
+exec spInsertHD @MaHD=N'HD01',@TenHD=N'Hóa đơn A',@GiaHD=500000,@MaNV=N'NV02',@MaBA=N'BA01';
+
+exec spUpdateHD @MaHD=N'HD02',@TenHD=N'Hóa đơn B',@GiaHD=1000000,@MaNV=N'NV02',@MaBA=N'BA02';
+
+select * from NhanVien;
+
+select * from NhanVien, LoaiNhanVien where NhanVien.MaLoaiNV = LoaiNhanVien.MaLoaiNV;
+
+select * from HoaDon;
+
+select * from HoaDonArchive;
+
+delete from HoaDonArchive;
+
+
+select * from HoSoBenhAn;
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID ('spUndoHD') is not null
+	drop proc spUndoHD;
+go
+
+create proc spUndoHD
+(@MaHD nvarchar(10))
+as
+begin
+	--set IDENTITY_INSERT NhanVien ON
+	insert into HoaDon (MaHD, TenHD, GiaHD, MaNV, MABA)
+	select top 1 MaHD, TenHD, GiaHD, MaNV, MABA
+	from HoaDonArchive
+	order by MaHD desc
+
+	delete from HoaDonArchive where MaHD = @MaHD;
+	--SET IDENTITY_INSERT NhanVien OFF
+end
+
+exec spUndoHD @MaHD=N'HD01';
+go
+
+
+use QuanLyBenhVien_DoAnCuoiKix;
+if OBJECT_ID('spUndoHSBA') is not null
+	drop proc spUndoHSBA;
+go
+
+create proc spUndoHSBA
+(@MaBA nvarchar(10))
+as
+begin
+	--set IDENTITY_INSERT NhanVien ON
+
+	INSERT INTO HosHoSoBenhAn(MaPhieuDK, MaNV, MaBN, MaKhoa)
+	SELECT TOP 1 MaPhieuDK, MaNV, MaBN, MaKhoa
+	FROM PhieuDangKyArchive
+	ORDER BY MaPhieuDK DESC;
+
+	DELETE FROM PhieuDangKyArchive WHERE MaPhieuDK = @MaPDK;
+	--SET IDENTITY_INSERT NhanVien OFF
+
+end
+go
+
+select * from dbo.fnHSBAHD();
+
+
