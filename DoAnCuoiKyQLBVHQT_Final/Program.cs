@@ -17,7 +17,7 @@ namespace DoAnQLBV
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmKetNoi());
+            Application.Run(new frmMain());
         }
     }
 }
