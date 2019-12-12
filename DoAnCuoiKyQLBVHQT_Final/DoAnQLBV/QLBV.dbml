@@ -1,0 +1,563 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QuanLyBenhVienDoAnCuoiKi" Class="QLBVDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=MINHKHOA\TIN;Initial Catalog=QuanLyBenhVienDoAnCuoiKi;Integrated Security=True" SettingsObjectName="DoAnQLBV.Properties.Settings" SettingsPropertyName="QuanLyBenhVienDoAnCuoiKiConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="Hospital.BacSis" Member="BacSis">
+    <Type Name="BacSi">
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoBS" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBS" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ChucVu" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="BacSi_HoSoBenhAn" Member="HoSoBenhAns" ThisKey="MaBS" OtherKey="MaBS" Type="HoSoBenhAn" />
+      <Association Name="Khoa_BacSi" Member="Khoa" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="Khoa" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.BenhNhans" Member="BenhNhans">
+    <Type Name="BenhNhan">
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoBN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBN" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="full_name" Type="System.String" DbType="NVarChar(51) NOT NULL" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="age_in_years" Type="System.Int32" DbType="Int" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="BenhNhan_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaBN" OtherKey="MaBN" Type="PhieuDangKy" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.HoaDons" Member="HoaDons">
+    <Type Name="HoaDon">
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="NgayLapHD" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="NgayThanhToanHD" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ThoiGian" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="HoSoBenhAn_HoaDon" Member="HoSoBenhAn" ThisKey="MaBA" OtherKey="MaBA" Type="HoSoBenhAn" IsForeignKey="true" />
+      <Association Name="NhanVien_HoaDon" Member="NhanVien" ThisKey="MaNV" OtherKey="MaNV" Type="NhanVien" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.HoSoBenhAns" Member="HoSoBenhAns">
+    <Type Name="HoSoBenhAn">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="HoSoBenhAn_HoaDon" Member="HoaDons" ThisKey="MaBA" OtherKey="MaBA" Type="HoaDon" />
+      <Association Name="HoSoBenhAn_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaBA" OtherKey="MaBA" Type="PhieuDangKy" />
+      <Association Name="HoSoBenhAn_ToaThuoc" Member="ToaThuocs" ThisKey="MaBA" OtherKey="MaBA" Type="ToaThuoc" />
+      <Association Name="HoSoBenhAn_ToaXetNghiem" Member="ToaXetNghiems" ThisKey="MaBA" OtherKey="MaBA" Type="ToaXetNghiem" />
+      <Association Name="BacSi_HoSoBenhAn" Member="BacSi" ThisKey="MaBS" OtherKey="MaBS" Type="BacSi" IsForeignKey="true" />
+      <Association Name="Phong_HoSoBenhAn" Member="Phong" ThisKey="MaPhong" OtherKey="MaPhong" Type="Phong" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.Khoas" Member="Khoas">
+    <Type Name="Khoa">
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenKhoa" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Khoa_BacSi" Member="BacSis" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="BacSi" />
+      <Association Name="Khoa_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="PhieuDangKy" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.LoaiPhongs" Member="LoaiPhongs">
+    <Type Name="LoaiPhong">
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="LoaiPhong_Phong" Member="Phongs" ThisKey="MaLoaiPhong" OtherKey="MaLoaiPhong" Type="Phong" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.LoaiXetNghiems" Member="LoaiXetNghiems">
+    <Type Name="LoaiXetNghiem">
+      <Column Name="MaLoaiXN" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenLoaiXN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaLXN" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="LoaiXetNghiem_XetNghiem" Member="XetNghiems" ThisKey="MaLoaiXN" OtherKey="MaLoaiXN" Type="XetNghiem" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.PhieuDangKys" Member="PhieuDangKies">
+    <Type Name="PhieuDangKy">
+      <Column Name="MaPhieuDK" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaKhoa" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="BenhNhan_PhieuDangKy" Member="BenhNhan" ThisKey="MaBN" OtherKey="MaBN" Type="BenhNhan" IsForeignKey="true" />
+      <Association Name="HoSoBenhAn_PhieuDangKy" Member="HoSoBenhAn" ThisKey="MaBA" OtherKey="MaBA" Type="HoSoBenhAn" IsForeignKey="true" />
+      <Association Name="Khoa_PhieuDangKy" Member="Khoa" ThisKey="MaKhoa" OtherKey="MaKhoa" Type="Khoa" IsForeignKey="true" />
+      <Association Name="NhanVien_PhieuDangKy" Member="NhanVien" ThisKey="MaNV" OtherKey="MaNV" Type="NhanVien" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.Phongs" Member="Phongs">
+    <Type Name="Phong">
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Phong_HoSoBenhAn" Member="HoSoBenhAns" ThisKey="MaPhong" OtherKey="MaPhong" Type="HoSoBenhAn" />
+      <Association Name="LoaiPhong_Phong" Member="LoaiPhong" ThisKey="MaLoaiPhong" OtherKey="MaLoaiPhong" Type="LoaiPhong" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.Thuocs" Member="Thuocs">
+    <Type Name="Thuoc">
+      <Column Name="MaThuoc" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenThuoc" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaThuoc" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Thuoc_ToaThuoc" Member="ToaThuocs" ThisKey="MaThuoc" OtherKey="MaThuoc" Type="ToaThuoc" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.ToaThuocs" Member="ToaThuocs">
+    <Type Name="ToaThuoc">
+      <Column Name="MaThuoc" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="HoSoBenhAn_ToaThuoc" Member="HoSoBenhAn" ThisKey="MaBA" OtherKey="MaBA" Type="HoSoBenhAn" IsForeignKey="true" />
+      <Association Name="Thuoc_ToaThuoc" Member="Thuoc" ThisKey="MaThuoc" OtherKey="MaThuoc" Type="Thuoc" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.ToaXetNghiems" Member="ToaXetNghiems">
+    <Type Name="ToaXetNghiem">
+      <Column Name="MaXN" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NgayXN" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="HoSoBenhAn_ToaXetNghiem" Member="HoSoBenhAn" ThisKey="MaBA" OtherKey="MaBA" Type="HoSoBenhAn" IsForeignKey="true" />
+      <Association Name="XetNghiem_ToaXetNghiem" Member="XetNghiem" ThisKey="MaXN" OtherKey="MaXN" Type="XetNghiem" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.XetNghiems" Member="XetNghiems">
+    <Type Name="XetNghiem">
+      <Column Name="MaXN" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenXN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiXN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="XetNghiem_ToaXetNghiem" Member="ToaXetNghiems" ThisKey="MaXN" OtherKey="MaXN" Type="ToaXetNghiem" />
+      <Association Name="LoaiXetNghiem_XetNghiem" Member="LoaiXetNghiem" ThisKey="MaLoaiXN" OtherKey="MaLoaiXN" Type="LoaiXetNghiem" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="HR.NhanViens" Member="NhanViens">
+    <Type Name="NhanVien">
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MatKhau" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="HoNV" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TenNV" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GioiTinh" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SDT" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Luong" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Quyen" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="email_local_part" Type="System.String" DbType="NVarChar(30)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="NhanVien_HoaDon" Member="HoaDons" ThisKey="MaNV" OtherKey="MaNV" Type="HoaDon" />
+      <Association Name="NhanVien_PhieuDangKy" Member="PhieuDangKies" ThisKey="MaNV" OtherKey="MaNV" Type="PhieuDangKy" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.RedoTable" Member="RedoTables">
+    <Type Name="RedoTable">
+      <Column Name="iID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="iStatus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.UndoTable" Member="UndoTables">
+    <Type Name="UndoTable">
+      <Column Name="iID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="iStatus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.RedoTableHoaDons" Member="RedoTableHoaDons">
+    <Type Name="RedoTableHoaDon">
+      <Column Name="iID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="NgayLapHD" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NgayThanhToanHD" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ThoiGian" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="iStatus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="Hospital.UndoTableHoaDons" Member="UndoTableHoaDons">
+    <Type Name="UndoTableHoaDon">
+      <Column Name="iID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="NgayLapHD" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NgayThanhToanHD" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ThoiGian" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="iStatus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="Hospital.spGetMaHDParas" Method="spGetMaHDParas">
+    <ElementType Name="spGetMaHDParasResult">
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.spRedoHoaDons" Method="spRedoHoaDons">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="Hospital.spUpdateHoaDons" Method="spUpdateHoaDons">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TenHD" Parameter="tenHD" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="GiaHD" Parameter="giaHD" Type="System.Double" DbType="Float" />
+    <Parameter Name="Hide" Parameter="hide" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="MaNV" Parameter="maNV" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="MaBA" Parameter="maBA" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="NgayLapHD" Parameter="ngayLapHD" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="NgayThanhToanHD" Parameter="ngayThanhToanHD" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ThoiGian" Parameter="thoiGian" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="HR.spGetMaNhanVienParas" Method="spGetMaNhanVienParas">
+    <ElementType Name="spGetMaNhanVienParasResult">
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnMaHoaDonTuDongTang" Method="fnMaHoaDonTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="HR.fnMaNhanVienTuDongTang" Method="fnMaNhanVienTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.SearchBenhNhan" Method="SearchBenhNhan" IsComposable="true">
+    <Parameter Name="MaBN" Parameter="maBN" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="HoBN" Parameter="hoBN" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="TenBN" Parameter="tenBN" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="NgaySinh" Parameter="ngaySinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="GioiTinh" Parameter="gioiTinh" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="Hospital.spTinhTongHDThuoc" Method="spTinhTongHDThuoc">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="TongTienHDThuoc" Parameter="tongTienHDThuoc" Type="System.Double" DbType="Float" Direction="InOut" />
+    <Parameter Name="TongTienHDXN" Parameter="tongTienHDXN" Type="System.Double" DbType="Float" Direction="InOut" />
+    <Parameter Name="TongTienPhong" Parameter="tongTienPhong" Type="System.Double" DbType="Float" Direction="InOut" />
+    <ElementType Name="spTinhTongHDThuocResult">
+      <Column Name="" Member="Column1" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.spTinhTongHoaDonTheoMaHD" Method="spTinhTongHoaDonTheoMaHD">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="spTinhTongHoaDonTheoMaHDResult">
+      <Column Name="" Member="Column1" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.spUndoHoaDons" Method="spUndoHoaDons">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.HienThiThu" Method="HienThiThu" IsComposable="true">
+    <Parameter Name="ngay" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.TongTienDoanhThu" Method="TongTienDoanhThu" IsComposable="true">
+    <Parameter Name="NgayStart" Parameter="ngayStart" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="NgayEnd" Parameter="ngayEnd" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="Hospital.fnHDPhong" Method="fnHDPhong" IsComposable="true">
+    <ElementType Name="fnHDPhongResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnHDThuoc" Method="fnHDThuoc" IsComposable="true">
+    <ElementType Name="fnHDThuocResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaThuoc" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TenThuoc" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaThuoc" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnHDXetNghiem" Method="fnHDXetNghiem" IsComposable="true">
+    <ElementType Name="fnHDXetNghiemResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaXN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="NgayXN" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TenXN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiXN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiXN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaLXN" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnTableHoaDonAll" Method="fnTableHoaDonAll" IsComposable="true">
+    <Parameter Name="MaHDx" Parameter="maHDx" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="fnTableHoaDonAllResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="HoBS" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TenBS" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="MaXN" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="NgayXN" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TenXN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaLoaiXN" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenLoaiXN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaLXN" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ThoiGian" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaThuoc" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TenThuoc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaThuoc" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnTableHoaDonPhong" Method="fnTableHoaDonPhong" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="fnTableHoaDonPhongResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnTableHoaDonThuoc" Method="fnTableHoaDonThuoc" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="fnTableHoaDonThuocResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaThuoc" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TenThuoc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaThuoc" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnTableHoaDonXN" Method="fnTableHoaDonXN" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="fnTableHoaDonXNResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaXN" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="NgayXN" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TenXN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaLoaiXN" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenLoaiXN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaLXN" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnTinhTongHDAllx" Method="fnTinhTongHDAllx" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="Hospital.fnTinhTongDoanhThu" Method="fnTinhTongDoanhThu" IsComposable="true">
+    <Parameter Name="NgayStart" Parameter="ngayStart" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="NgayEnd" Parameter="ngayEnd" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnTinhTongHDPhong" Method="fnTinhTongHDPhong" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="Hospital.fnTinhTongHDThuoc" Method="fnTinhTongHDThuoc" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="Hospital.fnTinhTongHDXN" Method="fnTinhTongHDXN" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="Hospital.fnTinhTongHoaDonAll" Method="fnTinhTongHoaDonAll" IsComposable="true">
+    <Parameter Name="MaHD" Parameter="maHD" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="Hospital.fnTongHDJoin" Method="fnTongHDJoin" IsComposable="true">
+    <ElementType Name="fnTongHDJoinResult">
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ChuanDoanBenh" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBS" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoNgayO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="TinhTrang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="HoBS" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenBS" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="MaXN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="NgayXN" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TenXN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiXN" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiXN" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaLXN" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ThoiGian" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ThanhToan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaThuoc" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TenThuoc" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaThuoc" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="MaLoaiPhong" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenPhong" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TenLoaiPhong" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaPhong" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="Hospital.fnMaBacSiTuDongTang" Method="fnMaBacSiTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaBenhNhanTuDongTang" Method="fnMaBenhNhanTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaHoSoBenhAnTuDongTang" Method="fnMaHoSoBenhAnTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaKhoaTuDongTang" Method="fnMaKhoaTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaLoaiPhongTuDongTang" Method="fnMaLoaiPhongTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaLoaiXetNghiemTuDongTang" Method="fnMaLoaiXetNghiemTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaPhieuDKTuDongTang" Method="fnMaPhieuDKTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaPhongTuDongTang" Method="fnMaPhongTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaThuocTuDongTang" Method="fnMaThuocTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.fnMaXetNghiemTuDongTang" Method="fnMaXetNghiemTuDongTang" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="Hospital.spRedoRooms" Method="spRedoRooms">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="Hospital.spUndoRooms" Method="spUndoRooms">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="Hospital.GetBillMonth" Method="GetBillMonth">
+    <Parameter Name="Month" Parameter="month" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetBillMonthResult">
+      <Column Name="MaHD" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHD" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="GiaHD" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Hide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaNV" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="MaBA" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="NgayLapHD" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="NgayThanhToanHD" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ThoiGian" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
