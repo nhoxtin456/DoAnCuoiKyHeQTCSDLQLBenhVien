@@ -43,7 +43,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtHide = new System.Windows.Forms.TextBox();
             this.txtGioiTinh = new System.Windows.Forms.TextBox();
-            this.dtp = new System.Windows.Forms.TextBox();
             this.txtTenBN = new System.Windows.Forms.TextBox();
             this.txtHoBN = new System.Windows.Forms.TextBox();
             this.txtMaBN = new System.Windows.Forms.TextBox();
@@ -213,14 +212,6 @@
             this.txtGioiTinh.Size = new System.Drawing.Size(83, 20);
             this.txtGioiTinh.TabIndex = 85;
             // 
-            // dtp
-            // 
-            this.dtp.Location = new System.Drawing.Point(180, 112);
-            this.dtp.Margin = new System.Windows.Forms.Padding(2);
-            this.dtp.Name = "dtp";
-            this.dtp.Size = new System.Drawing.Size(83, 20);
-            this.dtp.TabIndex = 84;
-            // 
             // txtTenBN
             // 
             this.txtTenBN.Location = new System.Drawing.Point(251, 60);
@@ -266,7 +257,6 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtHide);
             this.Controls.Add(this.txtGioiTinh);
-            this.Controls.Add(this.dtp);
             this.Controls.Add(this.txtTenBN);
             this.Controls.Add(this.txtHoBN);
             this.Controls.Add(this.txtMaBN);
@@ -303,7 +293,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtHide;
         private System.Windows.Forms.TextBox txtGioiTinh;
-        private System.Windows.Forms.TextBox dtp;
         private System.Windows.Forms.TextBox txtTenBN;
         private System.Windows.Forms.TextBox txtHoBN;
         private System.Windows.Forms.TextBox txtMaBN;

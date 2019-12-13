@@ -494,6 +494,13 @@ namespace DoAnQLBV
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), month);
 			return ((ISingleResult<GetBillMonthResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="HR.spDangNhap")]
+		public ISingleResult<spDangNhapResult> spDangNhap([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaNV", DbType="NVarChar(10)")] string maNV, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MatKhau", DbType="VarChar(20)")] string matKhau, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quyen", DbType="NVarChar(30)")] string quyen, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Hide", DbType="Bit")] System.Nullable<bool> hide)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), maNV, matKhau, quyen, hide);
+			return ((ISingleResult<spDangNhapResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="Hospital.BacSis")]
@@ -7952,6 +7959,230 @@ namespace DoAnQLBV
 				if ((this._ThoiGian != value))
 				{
 					this._ThoiGian = value;
+				}
+			}
+		}
+	}
+	
+	public partial class spDangNhapResult
+	{
+		
+		private string _MaNV;
+		
+		private string _MatKhau;
+		
+		private string _HoNV;
+		
+		private string _TenNV;
+		
+		private System.DateTime _NgaySinh;
+		
+		private string _GioiTinh;
+		
+		private string _SDT;
+		
+		private string _Email;
+		
+		private double _Luong;
+		
+		private string _Quyen;
+		
+		private System.Nullable<bool> _Hide;
+		
+		private string _email_local_part;
+		
+		public spDangNhapResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaNV", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string MaNV
+		{
+			get
+			{
+				return this._MaNV;
+			}
+			set
+			{
+				if ((this._MaNV != value))
+				{
+					this._MaNV = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatKhau", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string MatKhau
+		{
+			get
+			{
+				return this._MatKhau;
+			}
+			set
+			{
+				if ((this._MatKhau != value))
+				{
+					this._MatKhau = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HoNV", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string HoNV
+		{
+			get
+			{
+				return this._HoNV;
+			}
+			set
+			{
+				if ((this._HoNV != value))
+				{
+					this._HoNV = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenNV", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string TenNV
+		{
+			get
+			{
+				return this._TenNV;
+			}
+			set
+			{
+				if ((this._TenNV != value))
+				{
+					this._TenNV = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgaySinh", DbType="DateTime NOT NULL")]
+		public System.DateTime NgaySinh
+		{
+			get
+			{
+				return this._NgaySinh;
+			}
+			set
+			{
+				if ((this._NgaySinh != value))
+				{
+					this._NgaySinh = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GioiTinh", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string GioiTinh
+		{
+			get
+			{
+				return this._GioiTinh;
+			}
+			set
+			{
+				if ((this._GioiTinh != value))
+				{
+					this._GioiTinh = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDT", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string SDT
+		{
+			get
+			{
+				return this._SDT;
+			}
+			set
+			{
+				if ((this._SDT != value))
+				{
+					this._SDT = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this._Email = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Luong", DbType="Float NOT NULL")]
+		public double Luong
+		{
+			get
+			{
+				return this._Luong;
+			}
+			set
+			{
+				if ((this._Luong != value))
+				{
+					this._Luong = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quyen", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string Quyen
+		{
+			get
+			{
+				return this._Quyen;
+			}
+			set
+			{
+				if ((this._Quyen != value))
+				{
+					this._Quyen = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Hide", DbType="Bit")]
+		public System.Nullable<bool> Hide
+		{
+			get
+			{
+				return this._Hide;
+			}
+			set
+			{
+				if ((this._Hide != value))
+				{
+					this._Hide = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_email_local_part", DbType="NVarChar(30)")]
+		public string email_local_part
+		{
+			get
+			{
+				return this._email_local_part;
+			}
+			set
+			{
+				if ((this._email_local_part != value))
+				{
+					this._email_local_part = value;
 				}
 			}
 		}

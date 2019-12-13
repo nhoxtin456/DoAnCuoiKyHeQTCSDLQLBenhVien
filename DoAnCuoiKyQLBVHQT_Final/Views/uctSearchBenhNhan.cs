@@ -40,7 +40,7 @@ namespace DoAnQLBV.Views
             try
             {
                 DataTable dt = new DataTable();
-                SqlCommand myCmd = new SqlCommand("Hospital.SearchBenhNhan", myConn);
+                SqlCommand myCmd = new SqlCommand("Hospital.spSearchBenhNhan", myConn);
                 myCmd.CommandType = CommandType.StoredProcedure;
                 string select = cmbFind.GetItemText(cmbFind.SelectedItem);
                 switch (select)

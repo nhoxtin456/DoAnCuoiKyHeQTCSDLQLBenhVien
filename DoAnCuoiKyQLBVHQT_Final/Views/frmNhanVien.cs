@@ -105,8 +105,8 @@ namespace DoAnQLBV.Views
 
             cmbQuyen.Items.Clear();
             cmbQuyen.Items.Add("Admin");
-            cmbQuyen.Items.Add("NhanVienTiepTan");
-            cmbQuyen.Items.Add("NhanVienKeToan");
+            cmbQuyen.Items.Add("NhanVien");
+          
 
             cmbHide.Items.Clear();
             cmbHide.Items.Add("False");

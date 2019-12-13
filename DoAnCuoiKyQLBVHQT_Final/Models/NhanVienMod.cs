@@ -115,6 +115,15 @@ namespace DoAnQLBV.Models
             return Models.connection.FillDataSet("HR.spGetMaNhanVienParas", CommandType.StoredProcedure);
         }
 
+        public bool KiemTraDangNhap(string _user, string _password, string _quyen, bool _hide)
+        {
+            var dn = context.spDangNhap(_user, _password, _quyen, _hide);
+            int count = 0;
+
+            foreach (var r in dn) count++;
+            if (count == 0) return false;
+            return true;
+        }
 
 
     }

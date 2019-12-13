@@ -3,170 +3,16 @@ go
 ----------------------------------------------------------
 --Views, store procedures, User defined function, trigger:
 ----------------------------------------------------------
+use QuanLyBenhVienDoAnCuoiKi;
+if OBJECT_ID('HR.spGetNV') is not null
+	drop proc HR.spGetNV;
+go
 
-
---  Thêm User và Login
-Create or alter Proc HR.spThemTaiKhoanDangNhap
-(@TenTaiKhoan nvarchar(max),@matkhau nvarchar(max))
+create proc HR.spGetNV
 as
 begin
-	begin transaction
-	--thêm login và user
-	declare @SQLStringCreateLogin nvarchar(max)
-	set @SQLStringCreateLogin= 'CREATE LOGIN ['+@TenTaiKhoan+'] WITH PASSWORD = '''+@matkhau+''''+',DEFAULT_DATABASE=[QuanLyBenhVienDoAnCuoiKi],
-			DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION = ON, CHECK_POLICY = ON;'
-	--exec (@SQLStringCreateLogin)		
-	EXEC sp_executesql
-	@stmt = @SQLStringCreateLogin,
-	@params = N'@tentk AS nvarchar, @mk as nvarchar',
-	@tentk = @TenTaiKhoan,
-	@mk = @matkhau;
-
-	declare @SQLStringCreateUser nvarchar (max)
-	set @SQLStringCreateUser =  'CREATE USER ['+@TenTaiKhoan+'] FOR LOGIN ['+@TenTaiKhoan+']'
-
-	--exec (@SQLStringCreateUser)
-
-	EXEC sp_executesql
-	@stmt = @SQLStringCreateUser,
-	@params = N'@tentk AS nvarchar',
-	@tentk = @TenTaiKhoan
-	
-	if(@@ERROR <> 0 )
-	begin
-		RAISERROR (N'Có lỗi xảy ra khi tạo tài khoản !!!',16, 1)
-		rollback transaction
-		return
-		end
-		commit transaction
-	end
-Go
-	
-
--- Phân quyền cho user
-Create or alter Proc HR.spPhanQuyenTaiKhoanDangNhap
-(
-	@Username nvarchar(10),
-	@Quyen nvarchar(10)
-)
-as
-begin
-	if (@Quyen = 'NhanVienTiepTan')
-	begin
-	exec sp_addrolemember 'NhanVienTiepTan', @Username
-	end
-	
-	if (@Quyen = 'NhanVienKeToan')
-	begin
-	exec sp_addrolemember 'NhanVienKeToan', @Username
-	end
-
-	if (@Quyen = 'ChuBenhVien')
-	begin
-	exec sp_addrolemember 'ChuBenhVien', @Username
-	exec sp_addsrvrolemember 'ChuBenhVien', @Username
-	end
+	select * from HR.NhanViens;
 end
-Go
-
---  Sửa thông tin tài khoản
-Create or alter Proc HR.spSuaTaiKhoanDangNhap
-(@TenTaiKhoan nvarchar(max),@matkhau nvarchar(max))
-as
-begin
-	begin transaction
-	--update login
-	declare @SQLStringUpdateLogin nvarchar(max)
-	set @SQLStringUpdateLogin= ' alter LOGIN ['+@TenTaiKhoan+'] WITH PASSWORD = '''+@matkhau+''''+''
-	--exec (@SQLStringUpdateLogin)
-
-	EXEC sp_executesql
-	@stmt = @SQLStringUpdateLogin,
-	@params = N'@tentk AS nvarchar,@mk as nvarchar',
-	@tentk = @TenTaiKhoan,
-	@mk = @matkhau;
-
-
-	if(@@ERROR <> 0 )
-	begin
-		RAISERROR (N'Có lỗi xảy ra !!!',16, 1)
-		rollback transaction
-		return
-		end
-		commit transaction;
-	end;
-Go
-
--- Xóa tài khoản
-Create or alter Proc HR.spXoaTaiKhoanDangNhap
-(@TenTaiKhoan nvarchar(max))
-as
-begin
-	begin transaction
-	--thêm login và user
-	declare @SQLStringDeleteUser nvarchar (max)
-	set @SQLStringDeleteUser =  'drop user ['+@TenTaiKhoan+']'
---exec (@SQLStringDeleteUser)
-	exec sp_executesql
-	@stmt = @SQLStringDeleteUser,
-	@params = N'@tentk as nvarchar',
-	@tentk = @TenTaiKhoan;
-
-
-	declare @SQLStringDeleteLogin nvarchar (max)
-	set @SQLStringDeleteLogin =  'drop login ['+@TenTaiKhoan+']'
---exec (@SQLStringCreateLogin)
-	exec sp_executesql
-	@stmt = @SQLStringDeleteLogin,
-	@params = N'@tentk as nvarchar',
-	@tentk = @TenTaiKhoan;
-
-	if(@@ERROR <> 0 )
-	begin
-		RAISERROR (N'Có lỗi xảy ra khi xóa tài khoản !!!',16, 1)
-		rollback transaction
-		return
-		end
-		commit transaction;
-	end;
-Go
-
---  Đổi mật khẩu
-CREATE or alter PROCEDURE HR.spDoiMatKhauDangNhap
-(
-	@Username nvarchar(100),
-	@Passwordcu nvarchar(100),
-	@Passwordmoi  nvarchar(100))
-as
-begin tran
-	declare @mkcu nvarchar(20)
-	select @mkcu=MatKhau from HR.NhanViens where MaNV=@Username
-	if (@mkcu=@Passwordcu)
-	begin
-		declare @mkmoi nvarchar(20)
-		set @mkmoi=@Passwordmoi 
-		
-		update HR.NhanViens set MatKhau = @Passwordmoi where MaNV= @Username
-		declare @SQLStringDoiMKDN nvarchar(max)
-		set @SQLStringDoiMKDN= 'ALTER LOGIN ['+@Username + '] WITH PASSWORD = ''' + @Passwordmoi + ''' OLD_PASSWORD = ''' + @Passwordcu + ''''
-		--exec(@SQLStringDoiMKDN)
-		exec sp_executesql
-		@stmt = @SQLStringDoiMKDN,
-		@params = N'@user as nvarchar, @passnew as nvarchar, @passold as nvarchar',
-		@user = @Username,
-		@passnew=@mkmoi,
-		@passold=@mkcu;
-	end
-
-	if (@@ERROR<>0)
-	begin
-		RAISERROR(N' Có lỗi xảy ra khi đổi mật khẩu', 16, 1)
-		rollback tran
-		return;
-	end		
-	commit tran;
-Go
-
 
 -- Thêm NhanViens
 if OBJECT_ID ('HR.spInsertNV') is not null
@@ -219,8 +65,8 @@ insert into HR.NhanViens
 (MaNV,MatKhau,HoNV,TenNV,NgaySinh,GioiTinh,SDT,Email,Luong,Quyen,Hide)
 values
 (@MaNV,@MatKhau,@HoNV,@TenNV,@NgaySinh,@GioiTinh,@SDT,@Email,@Luong,@Quyen,@Hide)
-Exec HR.spThemTaiKhoanDangNhap @MaNV,@MatKhau
-Exec HR.spPhanQuyenTaiKhoanDangNhap @MaNV,@Quyen
+--Exec HR.spThemTaiKhoanDangNhap @MaNV,@MatKhau
+--Exec HR.spPhanQuyenTaiKhoanDangNhap @MaNV,@Quyen
 --truncate table HR.RedoTableNV;
 end
 go
@@ -292,7 +138,7 @@ set
 	Hide=@Hide
 	--MaLoaiNV=@MaLoaiNV
 where MaNV=@MaNV
-Exec HR.spSuaTaiKhoanDangNhap @MaNV,@MatKhau
+--Exec HR.spSuaTaiKhoanDangNhap @MaNV,@MatKhau
 end
 go
 
@@ -309,9 +155,39 @@ begin
 	if not exists (select * from HR.NhanViens where MaNV=@MaNV)
 		throw 50001, 'Invalid MaNV.', 1;
 delete from HR.NhanViens where MaNV=@MaNV;
-Exec HR.spXoaTaiKhoanDangNhap @MaNV
+--Exec HR.spXoaTaiKhoanDangNhap @MaNV
 end
 go
+
+use QuanLyBenhVienDoAnCuoiKi;
+if OBJECT_ID('HR.spDangNhap') is not null
+	drop proc HR.spDangNhap;
+go
+
+create proc HR.spDangNhap
+(
+	@MaNV nvarchar(10) = null,
+	@MatKhau varchar(20) = null,
+	@Quyen nvarchar(30) = null,
+	@Hide bit = null
+)
+as
+begin
+	if not exists (select MaNV from HR.NhanViens where MaNV=@MaNV)
+		throw 50001, 'Invalid MaNV.', 1;
+	select
+		*
+	from
+		HR.NhanViens
+	where MaNV=@MaNV and MatKhau=@MatKhau 
+		  and Quyen=@Quyen and @Hide=0;
+end
+go
+
+exec HR.spDangNhap N'NV07',N'abc',N'Admin',0;
+
+exec HR.spGetNV;
+
 
 --Lấy dữ liệu của bảng Hospital.BenhNhans
 use QuanLyBenhVienDoAnCuoiKi;
@@ -2234,7 +2110,157 @@ inner join
 
 go
 
----------------UNDO - REDO----------------- HÓA ĐƠN
+
+---------------UNDO - REDO-----------------
+create trigger Undo_Rooms_Insert on Hospital.Phongs
+after insert
+as
+declare
+	@RoomID nvarchar(10),
+	@RoomTypeID nvarchar(10),
+	@Name nvarchar(50),
+	--@OnFloor INT,
+	@Hide BIT;
+select @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong,@Name=TenPhong,
+	   @Hide = Hide
+from inserted
+insert UndoTable
+values (@RoomID, @RoomTypeID,@Name,@Hide,'inserted');
+go
+
+create trigger Undo_Rooms_Update on Hospital.Phongs
+instead of update
+as
+declare
+	@RoomID nvarchar(10),
+	@RoomTypeID nvarchar(10),
+	@Name nvarchar(50),
+	--@OnFloor INT,
+	@Hide BIT;
+select @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong,@Name=TenPhong,
+	   @Hide = Hide
+from inserted
+insert UndoTable
+select MaPhong, MaLoaiPhong,  TenPhong,Hide, 'updated' from Hospital.Phongs where MaPhong = @RoomID
+update Hospital.Phongs set MaLoaiPhong = @RoomTypeID, TenPhong=@Name,Hide = @Hide where MaPhong = @RoomID
+GO
+
+
+create trigger Undo_Rooms_Delete on Hospital.Phongs
+after delete
+as
+declare
+	@RoomID nvarchar(10),
+	@RoomTypeID nvarchar(10),
+	@Name nvarchar(50),
+	--@OnFloor INT,
+	@Hide BIT;
+select @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong,@Name=TenPhong,
+	   @Hide = Hide
+from deleted
+insert UndoTable
+values (@RoomID, @RoomTypeID,@Name,@Hide,'deleted');
+go
+
+create or alter proc Hospital.spUndoRooms
+as
+exec ('DISABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
+exec ('DISABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
+declare
+	@RoomID nvarchar(10),
+	@RoomTypeID nvarchar(10),
+	@Name nvarchar(50),
+	--@OnFloor INT,
+	@Hide BIT,
+	@iStatus varchar (10);
+select top 1 @RoomID = MaPhong, @RoomTypeID = MaLoaiphong,@Name=TenPhong,@Hide = Hide, @iStatus = iStatus from Hospital.UndoTable order by iID desc
+if((select top 1 iStatus from Hospital.UndoTable order by iID desc) = 'inserted')
+begin
+	delete Hospital.Phongs
+	where MaPhong = @RoomID;
+	insert Hospital.RedoTable
+	values (@RoomID, @RoomTypeID, @Name,@Hide, @iStatus);
+	with t as (select top 1 * from Hospital.UndoTable order by iID desc )
+	delete from t;
+
+end
+else if((select top 1 iStatus from Hospital.UndoTable order by iID desc) = 'deleted')
+begin
+	insert Hospital.Phongs
+	values (@RoomID, @RoomTypeID, @Name,@Hide);
+	insert Hospital.RedoTable
+	values (@RoomID, @RoomTypeID, @Name,@Hide, @iStatus);
+	with t as (select top 1 * from Hospital.UndoTable order by iID desc )
+	delete from t;
+
+end
+
+else if((select top 1 iStatus from Hospital.UndoTable order by iID desc) = 'updated')
+begin
+	insert Hospital.RedoTable
+	select MaPhong, MaLoaiPhong, TenPhong, Hide, 'updated' from Hospital.Phongs where MaPhong = @RoomID;
+	delete Hospital.Phongs
+	where MaPhong = @RoomID;
+	insert Hospital.Phongs
+	values(@RoomID, @RoomTypeID, @Name, @Hide);
+
+	with t as (select top 1 * from Hospital.UndoTable order by iID desc )
+	delete from t;
+end
+
+exec ('ENABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
+exec ('ENABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
+go
+
+create proc Hospital.spRedoRooms
+as
+exec ('DISABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
+exec ('DISABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
+declare
+	@RoomID nvarchar(10),
+	@RoomTypeID nvarchar(10),
+	@Name nvarchar(50),
+	--@OnFloor INT,
+	@Hide BIT,
+	@iStatus varchar (10);
+select top 1 @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong, @Name=TenPhong,@Hide = Hide, @iStatus = iStatus from Hospital.RedoTable order by iID desc
+if((select top 1 iStatus from Hospital.RedoTable order by iID desc) = 'inserted')
+begin
+	insert Hospital.Phongs
+	values (@RoomID, @RoomTypeID,  @Name,@Hide);
+	insert Hospital.UndoTable
+	values (@RoomID, @RoomTypeID, @Name, @Hide, @iStatus);
+	with t as (select top 1 * from Hospital.RedoTable order by iID desc )
+	delete from t;
+end
+else if((select top 1 iStatus from Hospital.RedoTable order by iID desc) = 'deleted')
+begin
+	delete Hospital.Phongs
+	where MaPhong = @RoomID
+	insert Hospital.UndoTable
+	values (@RoomID, @RoomTypeID, @Name, @Hide, @iStatus);
+	with t as (select top 1 * from Hospital.RedoTable order by iID desc )
+	delete from t;
+end
+
+else if((select top 1 iStatus from Hospital.RedoTable order by iID desc) = 'updated')
+begin
+	insert Hospital.UndoTable
+	select MaPhong, MaLoaiPhong, TenPhong, Hide, 'updated' from Hospital.Phongs where MaPhong = @RoomID;
+	delete Hospital.Phongs
+	where MaPhong = @RoomID
+	insert Hospital.Phongs
+	values (@RoomID, @RoomTypeID, @Name, @Hide);
+	
+	with t as (select top 1 * from Hospital.RedoTable order by iID desc )
+	delete from t;
+end
+
+exec ('ENABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
+exec ('ENABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
+go
+
+
 use QuanLyBenhVienDoAnCuoiKi;
 drop table if exists Hospital.UndoTableHoaDons;
 go
@@ -2537,64 +2563,6 @@ Begin
 End 
 Go
 
---use QuanLyBenhVienDoAnCuoiKi;
---if OBJECT_ID ('Hospital.spTimKiemBN') is not null
---	drop proc Hospital.spTimKiemBN;
---go
-
---CREATE or alter PROCEDURE Hospital.spTimKiemBN  
---(
---	 @MaBN			NVARCHAR(50) = NULL,	
---	 @HoBN					NVARCHAR(100) = NULL,	
---	 @TenBN        NVARCHAR(100) = NULL,	
---	 @NgaySinh				datetime= NULL
---	 --@GioiTinh		nvarchar(100) = null,
---	 --@Hide bit = 0	
---)
---AS          
---BEGIN      
---	SET NOCOUNT ON;  
---	DECLARE @SQL							NVARCHAR(MAX)
---	DECLARE @ParameterDef					NVARCHAR(500)
---    SET @ParameterDef =      '@MaBN			NVARCHAR(50),
---							@HoBN					NVARCHAR(100),
---							@TenBN			NVARCHAR(100),
---							@NgaySinh					datetime'
---    SET @SQL = 'SELECT MaBN
---						,HoBN
---						,TenBN
---						,NgaySinh						
---					FROM Hospital.BenhNhans WHERE -1=-1 ' 
---IF @MaBN IS NOT NULL AND @MaBN <> 0 
---SET @SQL = @SQL+ ' AND MaBN = @MaBN' + CAST(@MaBN as int)
---IF @HoBN IS NOT NULL AND @HoBN <> ''
---SET @SQL = @SQL+ ' AND HoBN like ''%'' + @HoBN + ''%'''
---IF @TenBN IS NOT NULL AND @TenBN <>''
---SET @SQL = @SQL+ ' AND TenBN like ''%'' + @TenBN + ''%''' 
---IF @NgaySinh IS NOT NULL AND @NgaySinh <>''
---SET @SQL = @SQL+  ' AND NgaySinh like ''%'' + @NgaySinh + ''%'''
---   EXEC sp_Executesql     @SQL,  @ParameterDef, @MaBN=@MaBN,@HoBN=@HoBN,@TenBN=@TenBN,@NgaySinh=@NgaySinh              
---END
---GO
-
---exec Hospital.spTimKiemBN @MaBN=0,@HoBN='',@TenBN=N'',@NgaySinh = '';
-
---select * from Hospital.BenhNhans;
-
-
---Go
-
-
---create procedure Hospital.spGetMaKhoaBS
---as
---begin
---	select MaKhoa from Hospital.Khoas
---end
---go
-
-
-
-Go
 Create function HR.fnMaNhanVienTuDongTang()
 returns nvarchar(10)
 As
@@ -3018,7 +2986,7 @@ set @sql =
 		+CASE when @TenBN is not null then
 	N' AND TenBN like N'''+'%'+ @TenBN +'%'+ N'''' ELSE N' ' END 
 		+CASE when @NgaySinh is not null then
-	N' AND NgaySinh='+convert(datetime,@NgaySinh) ELSE  +N' ' END 
+	N' AND NgaySinh='+convert(nvarchar,@NgaySinh) ELSE +N' ' END 
 		+CASE when @GioiTinh is not null then
 	N' AND GioiTinh='+convert(nvarchar,@GioiTinh) ELSE +N' ' END
 	print @sql;
@@ -3029,10 +2997,9 @@ exec sp_executesql
 	@HoBNx = @HoBN,
 	@TenBNx = @TenBN,
 	@NgaySinhx= @NgaySinh,
-	@GioiTinhx = @GioiTinh;
-	
+	@GioiTinhx = @GioiTinh;	
 go
-exec Hospital.spSearchBenhNhan @NgaySinh='1999-06-12';
+exec Hospital.spSearchBenhNhan @MaBN=N'BN06';
 go
 
 
@@ -3348,155 +3315,6 @@ exec Hospital.spTinhTongHDThuoc
 
 select @count as 'a';
 
-
-
-create trigger Undo_Rooms_Insert on Hospital.Phongs
-after insert
-as
-declare
-	@RoomID nvarchar(10),
-	@RoomTypeID nvarchar(10),
-	@Name nvarchar(50),
-	--@OnFloor INT,
-	@Hide BIT;
-select @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong,@Name=TenPhong,
-	   @Hide = Hide
-from inserted
-insert UndoTable
-values (@RoomID, @RoomTypeID,@Name,@Hide,'inserted');
-go
-
-create trigger Undo_Rooms_Update on Hospital.Phongs
-instead of update
-as
-declare
-	@RoomID nvarchar(10),
-	@RoomTypeID nvarchar(10),
-	@Name nvarchar(50),
-	--@OnFloor INT,
-	@Hide BIT;
-select @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong,@Name=TenPhong,
-	   @Hide = Hide
-from inserted
-insert UndoTable
-select MaPhong, MaLoaiPhong,  TenPhong,Hide, 'updated' from Hospital.Phongs where MaPhong = @RoomID
-update Hospital.Phongs set MaLoaiPhong = @RoomTypeID, TenPhong=@Name,Hide = @Hide where MaPhong = @RoomID
-GO
-
-
-create trigger Undo_Rooms_Delete on Hospital.Phongs
-after delete
-as
-declare
-	@RoomID nvarchar(10),
-	@RoomTypeID nvarchar(10),
-	@Name nvarchar(50),
-	--@OnFloor INT,
-	@Hide BIT;
-select @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong,@Name=TenPhong,
-	   @Hide = Hide
-from deleted
-insert UndoTable
-values (@RoomID, @RoomTypeID,@Name,@Hide,'deleted');
-go
-
-create or alter proc Hospital.spUndoRooms
-as
-exec ('DISABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
-exec ('DISABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
-declare
-	@RoomID nvarchar(10),
-	@RoomTypeID nvarchar(10),
-	@Name nvarchar(50),
-	--@OnFloor INT,
-	@Hide BIT,
-	@iStatus varchar (10);
-select top 1 @RoomID = MaPhong, @RoomTypeID = MaLoaiphong,@Name=TenPhong,@Hide = Hide, @iStatus = iStatus from Hospital.UndoTable order by iID desc
-if((select top 1 iStatus from Hospital.UndoTable order by iID desc) = 'inserted')
-begin
-	delete Hospital.Phongs
-	where MaPhong = @RoomID;
-	insert Hospital.RedoTable
-	values (@RoomID, @RoomTypeID, @Name,@Hide, @iStatus);
-	with t as (select top 1 * from Hospital.UndoTable order by iID desc )
-	delete from t;
-
-end
-else if((select top 1 iStatus from Hospital.UndoTable order by iID desc) = 'deleted')
-begin
-	insert Hospital.Phongs
-	values (@RoomID, @RoomTypeID, @Name,@Hide);
-	insert Hospital.RedoTable
-	values (@RoomID, @RoomTypeID, @Name,@Hide, @iStatus);
-	with t as (select top 1 * from Hospital.UndoTable order by iID desc )
-	delete from t;
-
-end
-
-else if((select top 1 iStatus from Hospital.UndoTable order by iID desc) = 'updated')
-begin
-	insert Hospital.RedoTable
-	select MaPhong, MaLoaiPhong, TenPhong, Hide, 'updated' from Hospital.Phongs where MaPhong = @RoomID;
-	delete Hospital.Phongs
-	where MaPhong = @RoomID;
-	insert Hospital.Phongs
-	values(@RoomID, @RoomTypeID, @Name, @Hide);
-
-	with t as (select top 1 * from Hospital.UndoTable order by iID desc )
-	delete from t;
-end
-
-exec ('ENABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
-exec ('ENABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
-go
-
-create proc Hospital.spRedoRooms
-as
-exec ('DISABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
-exec ('DISABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
-declare
-	@RoomID nvarchar(10),
-	@RoomTypeID nvarchar(10),
-	@Name nvarchar(50),
-	--@OnFloor INT,
-	@Hide BIT,
-	@iStatus varchar (10);
-select top 1 @RoomID = MaPhong, @RoomTypeID = MaLoaiPhong, @Name=TenPhong,@Hide = Hide, @iStatus = iStatus from Hospital.RedoTable order by iID desc
-if((select top 1 iStatus from Hospital.RedoTable order by iID desc) = 'inserted')
-begin
-	insert Hospital.Phongs
-	values (@RoomID, @RoomTypeID,  @Name,@Hide);
-	insert Hospital.UndoTable
-	values (@RoomID, @RoomTypeID, @Name, @Hide, @iStatus);
-	with t as (select top 1 * from Hospital.RedoTable order by iID desc )
-	delete from t;
-end
-else if((select top 1 iStatus from Hospital.RedoTable order by iID desc) = 'deleted')
-begin
-	delete Hospital.Phongs
-	where MaPhong = @RoomID
-	insert Hospital.UndoTable
-	values (@RoomID, @RoomTypeID, @Name, @Hide, @iStatus);
-	with t as (select top 1 * from Hospital.RedoTable order by iID desc )
-	delete from t;
-end
-
-else if((select top 1 iStatus from Hospital.RedoTable order by iID desc) = 'updated')
-begin
-	insert Hospital.UndoTable
-	select MaPhong, MaLoaiPhong, TenPhong, Hide, 'updated' from Hospital.Phongs where MaPhong = @RoomID;
-	delete Hospital.Phongs
-	where MaPhong = @RoomID
-	insert Hospital.Phongs
-	values (@RoomID, @RoomTypeID, @Name, @Hide);
-	
-	with t as (select top 1 * from Hospital.RedoTable order by iID desc )
-	delete from t;
-end
-
-exec ('ENABLE TRIGGER Undo_Rooms_Insert ON Hospital.Phongs')
-exec ('ENABLE TRIGGER Undo_Rooms_Delete ON Hospital.Phongs')
-go
 
 --use QuanLyBenhVienDoAnCuoiKi;
 --go

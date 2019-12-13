@@ -1,6 +1,6 @@
-﻿namespace DoAnQLBV
+﻿namespace DoAnQLBV.Views
 {
-    partial class frmKetNoi
+    partial class frmLogin
     {
         /// <summary>
         /// Required designer variable.
@@ -31,14 +31,14 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.btnConnect = new System.Windows.Forms.Button();
+            this.btnThoat = new System.Windows.Forms.Button();
+            this.btnDangNhap = new System.Windows.Forms.Button();
             this.txtUser = new System.Windows.Forms.TextBox();
-            this.cbServer = new System.Windows.Forms.ComboBox();
-            this.lblMK = new System.Windows.Forms.Label();
+            this.lblMatKhau = new System.Windows.Forms.Label();
             this.lblTenDN = new System.Windows.Forms.Label();
             this.txtPass = new System.Windows.Forms.TextBox();
-            this.lblTenServer = new System.Windows.Forms.Label();
+            this.rdbNhanVien = new System.Windows.Forms.RadioButton();
+            this.rdbAdmin = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -48,10 +48,10 @@
             // 
             this.groupBox2.Controls.Add(this.pictureBox1);
             this.groupBox2.Controls.Add(this.groupBox1);
-            this.groupBox2.Location = new System.Drawing.Point(21, 12);
+            this.groupBox2.Location = new System.Drawing.Point(21, 6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(430, 327);
-            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             // 
             // pictureBox1
@@ -66,14 +66,14 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.btnExit);
-            this.groupBox1.Controls.Add(this.btnConnect);
+            this.groupBox1.Controls.Add(this.rdbNhanVien);
+            this.groupBox1.Controls.Add(this.rdbAdmin);
+            this.groupBox1.Controls.Add(this.btnThoat);
+            this.groupBox1.Controls.Add(this.btnDangNhap);
             this.groupBox1.Controls.Add(this.txtUser);
-            this.groupBox1.Controls.Add(this.cbServer);
-            this.groupBox1.Controls.Add(this.lblMK);
+            this.groupBox1.Controls.Add(this.lblMatKhau);
             this.groupBox1.Controls.Add(this.lblTenDN);
             this.groupBox1.Controls.Add(this.txtPass);
-            this.groupBox1.Controls.Add(this.lblTenServer);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.groupBox1.Location = new System.Drawing.Point(12, 74);
             this.groupBox1.Name = "groupBox1";
@@ -81,29 +81,29 @@
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             // 
-            // btnExit
+            // btnThoat
             // 
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnExit.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExit.Location = new System.Drawing.Point(269, 164);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(102, 43);
-            this.btnExit.TabIndex = 8;
-            this.btnExit.Text = "Thoát";
-            this.btnExit.UseVisualStyleBackColor = false;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnThoat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnThoat.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnThoat.Location = new System.Drawing.Point(269, 164);
+            this.btnThoat.Name = "btnThoat";
+            this.btnThoat.Size = new System.Drawing.Size(102, 43);
+            this.btnThoat.TabIndex = 8;
+            this.btnThoat.Text = "Thoát";
+            this.btnThoat.UseVisualStyleBackColor = false;
+            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
-            // btnConnect
+            // btnDangNhap
             // 
-            this.btnConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnConnect.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect.Location = new System.Drawing.Point(156, 164);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(102, 43);
-            this.btnConnect.TabIndex = 7;
-            this.btnConnect.Text = "Kết nối";
-            this.btnConnect.UseVisualStyleBackColor = false;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnDangNhap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnDangNhap.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDangNhap.Location = new System.Drawing.Point(156, 164);
+            this.btnDangNhap.Name = "btnDangNhap";
+            this.btnDangNhap.Size = new System.Drawing.Size(102, 43);
+            this.btnDangNhap.TabIndex = 7;
+            this.btnDangNhap.Text = "Đăng Nhập";
+            this.btnDangNhap.UseVisualStyleBackColor = false;
+            this.btnDangNhap.Click += new System.EventHandler(this.btnDangNhap_Click);
             // 
             // txtUser
             // 
@@ -113,25 +113,16 @@
             this.txtUser.Size = new System.Drawing.Size(215, 26);
             this.txtUser.TabIndex = 2;
             // 
-            // cbServer
+            // lblMatKhau
             // 
-            this.cbServer.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbServer.FormattingEnabled = true;
-            this.cbServer.Location = new System.Drawing.Point(156, 45);
-            this.cbServer.Name = "cbServer";
-            this.cbServer.Size = new System.Drawing.Size(215, 27);
-            this.cbServer.TabIndex = 0;
-            // 
-            // lblMK
-            // 
-            this.lblMK.AutoSize = true;
-            this.lblMK.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMK.ForeColor = System.Drawing.Color.Black;
-            this.lblMK.Location = new System.Drawing.Point(7, 111);
-            this.lblMK.Name = "lblMK";
-            this.lblMK.Size = new System.Drawing.Size(100, 22);
-            this.lblMK.TabIndex = 6;
-            this.lblMK.Text = "Mật khẩu :";
+            this.lblMatKhau.AutoSize = true;
+            this.lblMatKhau.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMatKhau.ForeColor = System.Drawing.Color.Black;
+            this.lblMatKhau.Location = new System.Drawing.Point(7, 111);
+            this.lblMatKhau.Name = "lblMatKhau";
+            this.lblMatKhau.Size = new System.Drawing.Size(100, 22);
+            this.lblMatKhau.TabIndex = 6;
+            this.lblMatKhau.Text = "Mật khẩu :";
             // 
             // lblTenDN
             // 
@@ -153,27 +144,40 @@
             this.txtPass.Size = new System.Drawing.Size(215, 26);
             this.txtPass.TabIndex = 3;
             // 
-            // lblTenServer
+            // rdbNhanVien
             // 
-            this.lblTenServer.AutoSize = true;
-            this.lblTenServer.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenServer.ForeColor = System.Drawing.Color.Black;
-            this.lblTenServer.Location = new System.Drawing.Point(6, 46);
-            this.lblTenServer.Name = "lblTenServer";
-            this.lblTenServer.Size = new System.Drawing.Size(108, 22);
-            this.lblTenServer.TabIndex = 4;
-            this.lblTenServer.Text = "Tên server :";
+            this.rdbNhanVien.AutoSize = true;
+            this.rdbNhanVien.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdbNhanVien.Location = new System.Drawing.Point(173, 19);
+            this.rdbNhanVien.Name = "rdbNhanVien";
+            this.rdbNhanVien.Size = new System.Drawing.Size(113, 26);
+            this.rdbNhanVien.TabIndex = 17;
+            this.rdbNhanVien.TabStop = true;
+            this.rdbNhanVien.Text = "Nhân Viên";
+            this.rdbNhanVien.UseVisualStyleBackColor = true;
             // 
-            // frmKetNoi
+            // rdbAdmin
+            // 
+            this.rdbAdmin.AutoSize = true;
+            this.rdbAdmin.Checked = true;
+            this.rdbAdmin.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdbAdmin.Location = new System.Drawing.Point(11, 19);
+            this.rdbAdmin.Name = "rdbAdmin";
+            this.rdbAdmin.Size = new System.Drawing.Size(81, 26);
+            this.rdbAdmin.TabIndex = 16;
+            this.rdbAdmin.TabStop = true;
+            this.rdbAdmin.Text = "Admin";
+            this.rdbAdmin.UseVisualStyleBackColor = true;
+            // 
+            // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 345);
+            this.ClientSize = new System.Drawing.Size(475, 345);
             this.Controls.Add(this.groupBox2);
-            this.Name = "frmKetNoi";
+            this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmKetNoi";
-            this.Load += new System.EventHandler(this.frmKetNoi_Load);
+            this.Text = "frmLogin";
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -187,14 +191,13 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Button btnThoat;
+        private System.Windows.Forms.Button btnDangNhap;
         private System.Windows.Forms.TextBox txtUser;
-        private System.Windows.Forms.ComboBox cbServer;
-        private System.Windows.Forms.Label lblMK;
+        private System.Windows.Forms.Label lblMatKhau;
         private System.Windows.Forms.Label lblTenDN;
         private System.Windows.Forms.TextBox txtPass;
-        private System.Windows.Forms.Label lblTenServer;
+        private System.Windows.Forms.RadioButton rdbNhanVien;
+        private System.Windows.Forms.RadioButton rdbAdmin;
     }
 }
-

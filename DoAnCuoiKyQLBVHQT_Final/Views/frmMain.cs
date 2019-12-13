@@ -12,15 +12,71 @@ namespace DoAnQLBV.Views
 {
     public partial class frmMain : Form
     {
+        public static bool isLogin;
+        public static bool QuanLyMode;
+        public static string user;
+        public static string password;
         public frmMain()
         {
+            isLogin = false;
+            QuanLyMode = true;
             InitializeComponent();
+            KhoiTaoMoi();
         }
+        private void KhoiTaoMoi()
+        {
+            if (isLogin == false)
+            {
+                this.đăngNhậpToolStripMenuItem.Enabled = true;
+                this.đăngXuấtToolStripMenuItem.Enabled = false;
+                this.quảnLýToolStripMenuItem.Enabled = false;
+                this.hoatDongToolStripMenuItem.Enabled = false;
+                
+            }
+        }
+        private void đăngNhậpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmLogin login = new frmLogin();
+            login.ShowDialog();
+            if (frmMain.isLogin == true)
+            {
+                if (QuanLyMode == true)
+                {
+                    this.quảnLýToolStripMenuItem.Enabled = true;
+                   
+                    this.quảnLýNhânViênToolStripMenuItem.Enabled = true;
+                    this.quảnLýBácSĩToolStripMenuItem.Enabled = true;
+                    this.quảnLýKhoaToolStripMenuItem.Enabled = true;
+                    this.đăngNhậpToolStripMenuItem.Enabled = false;
+                    this.đăngXuấtToolStripMenuItem.Enabled = true;
 
-      
+                }
+                else
+                {
+                    this.quảnLýToolStripMenuItem.Enabled = false;
+                    this.hoatDongToolStripMenuItem.Enabled = true;
+                    this.đăngNhậpToolStripMenuItem.Enabled = false;
+                    this.đăngXuấtToolStripMenuItem.Enabled = true;
+                }
 
-
-
+            }
+        }
+        private void đăngXuấtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            isLogin = false;
+            KhoiTaoMoi();
+        }
+        private void thoátToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            //this.Close();
+            DialogResult dr = MessageBox.Show("Bạn có muốn thoát ?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dr == DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+                return;
+        }
         private void quảnLýNhânViênToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             frmNhanVien nv = new frmNhanVien();
@@ -51,11 +107,7 @@ namespace DoAnQLBV.Views
             xetNghiem.ShowDialog();
         }
 
-        private void quảnLýToaXétNghiệmToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmToaXetNghiem toaXetNghiem = new frmToaXetNghiem();
-            toaXetNghiem.ShowDialog();
-        }
+      
 
         private void quảnLýLoạiPhòngToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -76,11 +128,7 @@ namespace DoAnQLBV.Views
             thuoc.ShowDialog();
         }
 
-        private void quảnLýToaThuốcToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmToaThuoc toaThuoc = new frmToaThuoc();
-            toaThuoc.ShowDialog();
-        }
+       
 
 
 
@@ -116,6 +164,18 @@ namespace DoAnQLBV.Views
             thanhToan.ShowDialog();
         }
 
+        private void toaXétNghiệmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmToaXetNghiem frmToaXetNghiem = new frmToaXetNghiem();
+            frmToaXetNghiem.ShowDialog();
+        }
+
+        private void toaThuốcToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmToaThuoc frmToaThuoc = new frmToaThuoc();
+            frmToaThuoc.ShowDialog();
+        }
+
 
         private void trợGiúpToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -124,16 +184,7 @@ namespace DoAnQLBV.Views
             
         }
 
-        private void thoátToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dr = MessageBox.Show("Bạn có muốn thoát ?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.Yes)
-            {
-                this.Close();
-            }
-            else
-                return;
-        }
+      
 
         private void doanhThuToolStrip_Click(object sender, EventArgs e)
         {
